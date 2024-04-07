@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <string.h>
 #include <stdlib.h>
 
-#include "../DLinkList/DLinkList.h"
+#include "DLinkList.h"
 #include "HashTable.h"
 
-int HT_Ctor(HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Elem_t))
+int HT_Ctor(HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t))
 {
     if (Size > HT_MAX_CAPACITY) return 0;
     myHashTable->Size         = Size;
@@ -22,7 +22,7 @@ int HT_Dtor(HashTable_t* myHashTable)
 {
     for (size_t i = 0; i < myHashTable->Size; i++)
     {
-        HT_CloseItem((myHashTable->Items) + i);
+        HT_CloseItem(myHashTable->Items + i);
     }
     free(myHashTable->Items);
     return 1;
@@ -44,3 +44,19 @@ int HT_CloseItem(HT_Item_t* CurrentItem)
     return 1;
 }
 
+int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
+{
+    size_t hash = myHashTable->HashFunction(Key);
+    size_t index = hash % (myHashTable->Size);
+    DLL_Elem_t NewValue = {hash, Key, Value, 1};
+    //check for collusion
+    DLL_Node_t* CopyNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
+    if (CopyNode)
+    {
+        CopyNode->Value.Occurance++;
+        return 1;
+    }
+    myHashTable->Items[index].Amount++;
+    DLL_PushFront(NewValue, myHashTable->Items[index].DList);  
+    return 1;
+}

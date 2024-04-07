@@ -1,9 +1,7 @@
 #ifndef DLINKLIST_H
 #define DLINKLIST_H
-  
-typedef char* DLL_Elem_t;
-#define SPECIFIER "%s"
-const DLL_Elem_t POISON_ELEMENT = NULL;
+
+#include "HT_DLL_Types.h"
 
 struct DLL_Node {
     DLL_Elem_t  Value;

@@ -1,7 +1,19 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <string.h>
 #include <stdlib.h>
 
+#include "DLinkList.h"
+
+//=======================================================================================
+//Change Depending on type of element
+bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
+{
+    if (strcmp(val1.Key,val2.Key))  return false;
+    if (val1.Hash   != val2.Hash)   return false;
+    if (val1.Value  != val2.Value)  return false;
+    //occurance not depend
+    return true; 
+}
 //=======================================================================================
 
 #include <assert.h>
@@ -43,8 +55,6 @@ enum CODES_OF_ERRORS {
 
 //=======================================================================================
 
-#include "DLinkList.h"
-
 int DLL_Ctor (DLL_LinkList_t* myLinkList)
 {
     MYASSERT(myLinkList, BAD_POINTER_PASSED_IN_FUNC, return 0)
@@ -61,14 +71,9 @@ int DLL_Dtor (DLL_LinkList_t* myLinkList)
 
     if (!(myLinkList->Head)) return 1;
 
-    DLL_Node_t* NextNode = NULL;
-
-    NextNode = (myLinkList->Head)->Next;
-
-    while(NextNode != NULL)
+    while(myLinkList->Head)
     {
         DLL_PopFront(myLinkList);
-        NextNode = (myLinkList->Head)->Next;
     }
 
     return 1;
@@ -144,11 +149,12 @@ DLL_Node_t* DLL_PushBack  (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
 int DLL_PopFront  (DLL_LinkList_t* myLinkList)
 {
     MYASSERT(myLinkList, BAD_POINTER_PASSED_IN_FUNC, return 0)
-    MYASSERT(myLinkList->Head, POP_FRONT_BUT_HEAD_NULL, return 0)
+
+    if (!(myLinkList->Head)) return 1;
 
     DLL_Node_t* PopNode = myLinkList->Head;
     myLinkList->Head = PopNode->Next;
-    (myLinkList->Head)->Prev = NULL;
+    if (myLinkList->Head) (myLinkList->Head)->Prev = NULL;
 
     free(PopNode);
     
@@ -209,8 +215,9 @@ DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
     
     while(CurrentNode != NULL)
     {
-        if (CurrentNode->Value == Value) return CurrentNode;
+        if (DLL_Compare(CurrentNode->Value, Value)) return CurrentNode;
         CurrentNode = CurrentNode->Next;
     }
     return NULL;
 }
+
