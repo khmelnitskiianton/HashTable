@@ -79,7 +79,7 @@ Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
 <p> <strong>
 
 1. <U> 0 Hash </U>: Size: 10, Max Collusion: 5335. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/972369d6-730c-488a-8849-8b1e3abff397" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d3cc18d6-5d7d-4beb-b994-02d377d89f0f" width = 80%>
 
 2. <U> First Letter Hash </U>: Size: 128, Max Collusion: 521. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4d82c0d1-cc18-4fbf-ad78-0512cb11cb51" width = 80%>
