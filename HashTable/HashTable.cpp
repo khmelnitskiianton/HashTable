@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "../DLinkedList/DLinkList.h"
+#include "../DLinkList/DLinkList.h"
 #include "HashTable.h"
 
 int HT_Ctor(HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Elem_t))

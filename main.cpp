@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "./DLinkedList/DLinkList.h"
+#include "./DLinkList/DLinkList.h"
 #include "./HashTable/HashTable.h"
 
 size_t hash1 (char* str);
