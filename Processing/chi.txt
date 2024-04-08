@@ -6,4 +6,4 @@ Sum/length_Hash 6.76
 ROR_Hash 1.03
 ROL_Hash 0.94
 Crc32_Hash 0.85
-MYHashFAQ6 0.84
+ElfHash 1.03

@@ -50,7 +50,7 @@ int main(int argc, char** argv)
         HT_Ctor(&MainHashTable, ht_size, Crc32Hash);    
         break;
         case 9:
-        HT_Ctor(&MainHashTable, ht_size, MYHashFAQ6);    
+        HT_Ctor(&MainHashTable, ht_size, ElfHash);    
         break;
         default: return 0; break;
     }

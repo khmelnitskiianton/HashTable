@@ -103,20 +103,15 @@ size_t Crc32Hash(const char *str)
     return crc ^ 0xFFFFFFFFUL;
 }
 
-size_t MYHashFAQ6(const char* str)
+size_t ElfHash(const char *s)
 {
-    unsigned int hash = 0;
-    size_t size = strlen(str);
-    const char* z = str;
-
-    for (; str < (z + size); str++)
+    size_t h = 0, high;
+    while (*s)
     {
-        hash += (unsigned char)(*str);
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
+        h = (h << 4) + *s++;
+        if (high = h & 0xF0000000)
+            h ^= high >> 24;
+        h &= ~high;
     }
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-    return hash;
+    return h;
 }

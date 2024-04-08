@@ -12,6 +12,6 @@ size_t SumLengthHash    (const char* str);
 size_t RORHash          (const char* str);
 size_t ROLHash          (const char* str);
 size_t Crc32Hash        (const char* str);
-size_t MYHashFAQ6       (const char* str);
+size_t ElfHash          (const char* str);
 
 #endif

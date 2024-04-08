@@ -4,7 +4,7 @@ NAME	= hash_table
 
 TEST = 9
 SIZE = 6000
-NAME_HASH = "MYHashFAQ6"
+NAME_HASH = "ElfHash"
 
 SRC_ASM_EXT = .nasm
 SRC_C_EXT   = .cpp

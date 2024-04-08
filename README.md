@@ -72,8 +72,8 @@ In first part we searching diffrent hash functions & load factors.
 5. Hash returns (sum of ascii codes of letters)/(length of word).
 6. ROL Hash. `hash[i] = ROL(hash[i-1]) xor str[i]`
 7. ROR Hash. `hash[i] = ROR(hash[i-1]) xor str[i]`
-8. CRC32 Hash.
-9. MYHashFAQ6 (from stack)
+8. [CRC32 Hash](https://ru.wikibooks.org/wiki/Реализации_алгоритмов/Циклический_избыточный_код).
+9. [ElfHash](https://en.wikipedia.org/wiki/PJW_hash_function)
    
 For searching uniformity I plot histograms `AmountOfCollusions(HashIndex)`. Diagrams show distribution of collusions in current hash function, there are spikes in some functions that affect on speed of working with hash table.
 
@@ -107,8 +107,8 @@ Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
 8. <U> CRC32 Hash </U>: Size 6000, Max Collusion: 8.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8df2c5e7-8880-4d13-aead-8fa2f3f7ccf9" width = 100%>
 
-9.  <U> MYHashFAQ6 </U>: Size 6000, Max Collusion: 7.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2833682e-4025-47ae-81ea-9661b8ff54ea" width = 100%>
+9.  <U> ElfHash </U>: Size 6000, Max Collusion: 9.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/284153f7-b80e-40f2-9b1d-a7c2bf185320" width = 100%>
 
 </strong></p>
 
@@ -124,7 +124,7 @@ This test is a goodness-of-fit measure: it's the actual distribution of items in
 
 After processing all function I plot histogram of chi-squared test:
 
-<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/3f8cd4cc-d148-4701-8cf7-0cc70ef992e9" width = 100%>
+<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/1cc531eb-9256-4c9a-8e47-31c00856d194" width = 100%>
 
 After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, MYHashFAQ6 and ROL Hash.
 
