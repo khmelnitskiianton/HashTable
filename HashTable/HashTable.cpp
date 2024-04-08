@@ -60,3 +60,17 @@ int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
     DLL_PushFront(NewValue, myHashTable->Items[index].DList);  
     return 1;
 }
+
+DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
+{
+    size_t hash = myHashTable->HashFunction(Key);
+    size_t index = hash % (myHashTable->Size);
+    DLL_Elem_t NewValue = {hash, Key, Value, 1};
+    //check for collusion
+    DLL_Node_t* FindNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
+    if (FindNode)
+    {
+        return FindNode;
+    }
+    return NULL;
+}

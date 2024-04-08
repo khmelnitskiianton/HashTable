@@ -9,13 +9,6 @@
 
 int WriteData(HashTable_t* HashTable, Information_t* InfoData);
 
-size_t hash1 (const char* str);
-size_t hash2 (const char* str);
-size_t hash3 (const char* str);
-size_t hash4 (const char* str);
-size_t hash5 (const char* str);
-size_t hash6 (const char* str);
-
 int main(int argc, char** argv)
 {
     if (argc < 5) 
@@ -33,21 +26,32 @@ int main(int argc, char** argv)
     switch (atoi(argv[4]))
     {
         case 1:
-        HT_Ctor(&MainHashTable, ht_size, hash1);    
+        HT_Ctor(&MainHashTable, ht_size, Hash0);    
         break;
         case 2:
-        HT_Ctor(&MainHashTable, ht_size, hash2);    
+        HT_Ctor(&MainHashTable, ht_size, FirstLetterHash);    
         break;
         case 3:
-        HT_Ctor(&MainHashTable, ht_size, hash3);    
+        HT_Ctor(&MainHashTable, ht_size, LengthHash);    
         break;
         case 4:
-        HT_Ctor(&MainHashTable, ht_size, hash4);    
+        HT_Ctor(&MainHashTable, ht_size, SumHash);    
         break;
         case 5:
-        HT_Ctor(&MainHashTable, ht_size, hash5);    
+        HT_Ctor(&MainHashTable, ht_size, SumLengthHash);    
         break;
-
+        case 6:
+        HT_Ctor(&MainHashTable, ht_size, RORHash);    
+        break;
+        case 7:
+        HT_Ctor(&MainHashTable, ht_size, ROLHash);    
+        break;
+        case 8:
+        HT_Ctor(&MainHashTable, ht_size, Crc32Hash);    
+        break;
+        case 9:
+        HT_Ctor(&MainHashTable, ht_size, MYHashFAQ6);    
+        break;
         default: return 0; break;
     }
 
@@ -69,53 +73,6 @@ int main(int argc, char** argv)
 
     InfoDtor(&InfoData);
     HT_Dtor(&MainHashTable);
-    return 0;
-}
-
-size_t hash1 (const char* str)
-{
-    if (!str) return 0;
-    return 0;
-}
-
-size_t hash2 (const char* str)
-{
-    if (!str) return 0;
-    return  (size_t) str[0];
-}
-
-size_t hash3 (const char* str)
-{
-    return strlen(str);
-}
-
-size_t hash4 (const char* str)
-{
-    size_t i = 0;
-    size_t summ = 0;
-    while (str[i] != '\0')
-    {
-        summ += (size_t) str[i];
-        i++;
-    }
-    return summ;
-}
-
-size_t hash5 (const char* str)
-{
-    size_t i = 0;
-    size_t summ = 0;
-    while (str[i] != '\0')
-    {
-        summ += (size_t) str[i];
-        i++;
-    }
-    return summ / strlen(str);
-}
-
-//TODO:
-size_t hash6 (const char* str)
-{
     return 0;
 }
 

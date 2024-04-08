@@ -12,6 +12,7 @@ Project of searching and optimizing hash functions & hash table
   - [First Part](#first-part)
     - [Histograms](#histograms)
     - [Uniformity](#uniformity)
+  - [Second Part](#second-part)
 
 ## Installation
 
@@ -50,9 +51,10 @@ In first part I take many hash functions and create histograms. Data base consis
 
 Hash Table bases on double linked list. Element has hash, key, value, occurance(no duplicates). 
 ```
-int HT_Ctor (HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t));
-int HT_Dtor (HashTable_t* myHashTable);
-int HT_Add  (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
+int         HT_Ctor (HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t));
+int         HT_Dtor (HashTable_t* myHashTable);
+int         HT_Add  (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
+DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 ```
 In second part I optimizes speed of functions using SIMD & asm tricks.
 
@@ -66,9 +68,10 @@ In first part we searching diffrent hash functions & load factors.
 3. Hash returns length of word.
 4. Hash returns sum of ascii codes of letters.
 5. Hash returns (sum of ascii codes of letters)/(length of word).
-6. ROL Hash.
-7. CRC32 Hash.
-8. My own hash.
+6. ROL Hash. `hash[i] = ROL(hash[i-1]) xor str[i]`
+7. ROR Hash. `hash[i] = ROR(hash[i-1]) xor str[i]`
+8. CRC32 Hash.
+9. MYHashFAQ6 (from stack)
    
 For searching uniformity I plot histograms `AmountOfCollusions(HashIndex)`. Diagrams show distribution of collusions in current hash function, there are spikes in some functions that affect on speed of working with hash table.
 
@@ -84,10 +87,27 @@ Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
 2. <U> First Letter Hash </U>: Size: 128, Max Collusion: 521. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4d82c0d1-cc18-4fbf-ad78-0512cb11cb51" width = 80%>
 
-3. <U> Length Word Hash </U>: Size 25, Max Collustion: 1023. 
+3. <U> Length Word Hash </U>: Size 30, Max Collustion: 1023. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/99be4a00-f5a3-441d-a1f5-9bf6a16c35ae" width = 80%>
 
-4. 
+4. <U> Sum of letters Hash </U>: Size 1500, Max Collusion: 31.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b612478f-ee30-4f81-b9f1-ca258164eb21" width = 80%>
+
+5. <U> (Sum of letters)/Length Hash </U>: Size 170, Max Collusion: 636.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 80%>
+
+6. <U> ROR Hash </U>: Size 6000, Max Collusion: 30.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4380511a-43c4-4d3f-8976-7162019bf5d7" width = 80%>
+
+7. <U> ROL Hash </U>: Size 6000, Max Collusion: 9.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2c8f85a8-bb16-4377-a17d-7bd4db5c3ada" width = 80%>
+
+8. <U> CRC32 Hash </U>: Size 6000, Max Collusion: 8.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8df2c5e7-8880-4d13-aead-8fa2f3f7ccf9" width = 80%>
+
+9.  <U> MYHashFAQ6 </U>: Size 6000, Max Collusion: 7.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2833682e-4025-47ae-81ea-9661b8ff54ea" width = 80%>
+
 </strong></p>
 
 ### Uniformity
@@ -102,6 +122,12 @@ This test is a goodness-of-fit measure: it's the actual distribution of items in
 
 After processing all function I plot histogram of chi-squared test:
 
-<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/5894eb58-b932-4e4f-ae73-3c43bee64bef" width = 80%>
+<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/3f8cd4cc-d148-4701-8cf7-0cc70ef992e9" width = 80%>
 
-After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous.
+After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, MYHashFAQ6 and ROL Hash.
+
+## Second Part
+
+I want to speed up my hash table. So I do stress tests: load big texts and finding some keys many times. After finding weak point I try to optimize it with help of SIMD, ASM inserts.
+
+...
