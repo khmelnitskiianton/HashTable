@@ -24,6 +24,8 @@ To start program you need to use CMake and run program
 
 Configure Makefile to change hash function or data
 
+`make all` will do everything, set `TEST`,`SIZE`,`NAME_HASH` to manipulate tests
+
 ```c
 git clone https://github.com/khmelnitskiianton/HashTable.git
 cd ./HashTable
@@ -82,31 +84,31 @@ Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
 <p> <strong>
 
 1. <U> 0 Hash </U>: Size: 10, Max Collusion: 5335. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d3cc18d6-5d7d-4beb-b994-02d377d89f0f" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d3cc18d6-5d7d-4beb-b994-02d377d89f0f" width = 100%>
 
 2. <U> First Letter Hash </U>: Size: 128, Max Collusion: 521. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4d82c0d1-cc18-4fbf-ad78-0512cb11cb51" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4d82c0d1-cc18-4fbf-ad78-0512cb11cb51" width = 100%>
 
 3. <U> Length Word Hash </U>: Size 30, Max Collustion: 1023. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/99be4a00-f5a3-441d-a1f5-9bf6a16c35ae" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/99be4a00-f5a3-441d-a1f5-9bf6a16c35ae" width = 100%>
 
 4. <U> Sum of letters Hash </U>: Size 1500, Max Collusion: 31.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b612478f-ee30-4f81-b9f1-ca258164eb21" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b612478f-ee30-4f81-b9f1-ca258164eb21" width = 100%>
 
 5. <U> (Sum of letters)/Length Hash </U>: Size 170, Max Collusion: 636.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 100%>
 
 6. <U> ROR Hash </U>: Size 6000, Max Collusion: 30.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4380511a-43c4-4d3f-8976-7162019bf5d7" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4380511a-43c4-4d3f-8976-7162019bf5d7" width = 100%>
 
 7. <U> ROL Hash </U>: Size 6000, Max Collusion: 9.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2c8f85a8-bb16-4377-a17d-7bd4db5c3ada" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2c8f85a8-bb16-4377-a17d-7bd4db5c3ada" width = 100%>
 
 8. <U> CRC32 Hash </U>: Size 6000, Max Collusion: 8.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8df2c5e7-8880-4d13-aead-8fa2f3f7ccf9" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8df2c5e7-8880-4d13-aead-8fa2f3f7ccf9" width = 100%>
 
 9.  <U> MYHashFAQ6 </U>: Size 6000, Max Collusion: 7.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2833682e-4025-47ae-81ea-9661b8ff54ea" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2833682e-4025-47ae-81ea-9661b8ff54ea" width = 100%>
 
 </strong></p>
 
@@ -118,11 +120,11 @@ Theory source: [chi-squred test for hash](https://stats.stackexchange.com/questi
 
 This test is a goodness-of-fit measure: it's the actual distribution of items in buckets versus the expected (or uniform) distribution of items.
 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/0eb840bb-b00d-4ec9-9788-aa83fd5af00e" width = 80%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/0eb840bb-b00d-4ec9-9788-aa83fd5af00e" width = 100%>
 
 After processing all function I plot histogram of chi-squared test:
 
-<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/3f8cd4cc-d148-4701-8cf7-0cc70ef992e9" width = 80%>
+<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/3f8cd4cc-d148-4701-8cf7-0cc70ef992e9" width = 100%>
 
 After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, MYHashFAQ6 and ROL Hash.
 
