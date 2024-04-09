@@ -174,7 +174,7 @@ First I decide to make search functions inline because this functions are called
 
 I count boost with summing percantages of workload:
 
-$boost_1 = \Delta(speed) = worload_{before} - workload_{after} = (3\% + 18.75\% + 24.58\% + 8.41\%) - 50.46\% = 4,28\%$, its net gain of inline optimizations (-O0 used). 
+$$boost_1 = \Delta(speed) = worload_{before} - workload_{after} = (3\% + 18.75\% + 24.58\% + 8.41\%) - 50.46\% = 4,28\%$$, its net gain of inline optimizations (-O0 used). 
 
 2. **GCC Optimization:**
    
