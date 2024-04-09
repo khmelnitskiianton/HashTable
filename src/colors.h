@@ -13,5 +13,5 @@
 #define RESET "\033[1;0m"
 
 //for((i=0;i<256;i++)); do for((j=0;j<256;j++)); do echo -e "color $i $j: \e[${i};${j}m test  \e[1;0m"; done; done
-
+ 
 #endif

@@ -9,7 +9,6 @@
 bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
 {
     if (strcmp(val1.Key,val2.Key))  return false;
-    if (val1.Hash   != val2.Hash)   return false;
     if (val1.Value  != val2.Value)  return false;
     //occurance not depend
     return true; 
@@ -103,7 +102,7 @@ DLL_Node_t* DLL_PushFront (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
         myLinkList->Head = NewNode;
         myLinkList->Tail = NewNode;
         NewNode->Value = Value;
-        return NULL;
+        return NewNode;
     }
 
     DLL_Node_t* OldHead = myLinkList->Head;

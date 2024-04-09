@@ -7,6 +7,8 @@
 #include "myassert.h"
 #include "creator.h"
 
+int InsertData(HashTable_t* HashTable, Information_t* InfoData);
+int StressTest(HashTable_t* HashTable, Information_t* InfoData);
 int WriteData(HashTable_t* HashTable, Information_t* InfoData);
 
 int main(int argc, char** argv)
@@ -54,22 +56,13 @@ int main(int argc, char** argv)
         break;
         default: return 0; break;
     }
+    //upload table
 
-    for (size_t i = 0; i < (InfoData.n_strings); i++)
-    {
-        HT_Add(&MainHashTable, (InfoData.string_buffer + i)->StartLine, 1);
-    }
-
-    //printf("%lu\n", MainHashTable.Items[74].Amount);
-    //DLL_Node_t* CurrentNode = MainHashTable.Items[74].DList->Head;
-    //while (CurrentNode)
-    //{
-    //    DLL_Elem_t Value = CurrentNode->Value;
-    //    printf("%lu %s %lu %lu\n", Value.Hash, Value.Key, Value.Value, Value.Occurance);
-    //    CurrentNode = CurrentNode->Next;
-    //}
-
+    InsertData(&MainHashTable, &InfoData);
+    
     WriteData(&MainHashTable, &InfoData);
+
+    StressTest(&MainHashTable, &InfoData);
 
     InfoDtor(&InfoData);
     HT_Dtor(&MainHashTable);
@@ -94,12 +87,32 @@ int WriteData(HashTable_t* HashTable, Information_t* InfoData)
         DLL_Node_t* CurrentNode = HashTable->Items[i].DList->Head;
         while (CurrentNode)
         {
-            DLL_Elem_t Value = CurrentNode->Value;
-            cases += Value.Value;
+            cases++;
             CurrentNode = CurrentNode->Next;
         }
         fprintf(file_write, "%lu %lu\n", i, cases);
     }
     
+    return 1;
+}
+
+int InsertData(HashTable_t* HashTable, Information_t* InfoData)
+{
+    for (size_t i = 0; i < (InfoData->n_strings); i++)
+    {
+        HT_Add(HashTable, (InfoData->string_buffer+i)->StartLine, 0);
+    }
+    return 1;
+}
+
+int StressTest(HashTable_t* HashTable, Information_t* InfoData)
+{
+    for (size_t i = 0; i < 64; i++)
+    {
+        for (size_t j = 0; j < (InfoData->n_strings); j++)
+        {
+            HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, 0);
+        }
+    }
     return 1;
 }

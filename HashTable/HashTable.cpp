@@ -51,15 +51,14 @@ int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
     DLL_Elem_t NewValue = {hash, Key, Value, 1};
     //check for collusion
     DLL_Node_t* CopyNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
-    if (CopyNode)
+    if (!CopyNode)
     {
-        CopyNode->Value.Occurance++;
-        return 1;
+        myHashTable->Items[index].Amount++;
+        CopyNode = DLL_PushFront(NewValue, myHashTable->Items[index].DList);  
     }
-    myHashTable->Items[index].Amount++;
-    DLL_PushFront(NewValue, myHashTable->Items[index].DList);  
+    CopyNode->Value.Occurance++;
     return 1;
-}
+} 
 
 DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
 {
@@ -68,9 +67,5 @@ DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
     DLL_Elem_t NewValue = {hash, Key, Value, 1};
     //check for collusion
     DLL_Node_t* FindNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
-    if (FindNode)
-    {
-        return FindNode;
-    }
-    return NULL;
+    return FindNode;
 }

@@ -13,6 +13,7 @@ Project of searching and optimizing hash functions & hash table
     - [Histograms](#histograms)
     - [Uniformity](#uniformity)
   - [Second Part](#second-part)
+    - [Optimization](#optimization)
 
 ## Installation
 
@@ -24,12 +25,14 @@ To start program you need to use CMake and run program
 
 Configure Makefile to change hash function or data
 
-`make all` will do everything, set `TEST`,`SIZE`,`NAME_HASH` to manipulate tests
+Create `./obj` & `./Perf/perf.data` file
+
+`make all` will do everything, set `TEST`,`SIZE`,`NAME_HASH` to manipulate tests and `CFLAGS`, `PERF`, `PERF_FLAGS` to perf profiling
 
 ```c
 git clone https://github.com/khmelnitskiianton/HashTable.git
 cd ./HashTable
-make all
+make all    #for histograms
 ```
 
 ## Extra programs
@@ -37,12 +40,13 @@ make all
 GCC compilier, Makefile for collection, Python & Seaborn to draw histograms.
 
 ```c
-sudo apt update && sudo apt upgrade     #update
-sudo apt install build-essential        #gcc
-sudo apt install make                   #makefile
-sudo apt install python3 -y             #python
-python -m pip install --upgrade pip     #pip
-pip install seaborn                     #seaborn
+sudo apt update && sudo apt upgrade                           #update
+sudo apt install build-essential                              #gcc
+sudo apt install make                                         #makefile
+sudo apt install python3 -y                                   #python
+python -m pip install --upgrade pip                           #pip
+pip install seaborn                                           #seaborn
+sudo apt-get install linux-tools-common linux-tools-generic   #perf
 ```
 
 ## Description
@@ -75,9 +79,11 @@ In first part we searching diffrent hash functions & load factors.
 8. [CRC32 Hash](https://ru.wikibooks.org/wiki/Реализации_алгоритмов/Циклический_избыточный_код).
 9. [ElfHash](https://en.wikipedia.org/wiki/PJW_hash_function)
    
-For searching uniformity I plot histograms `AmountOfCollusions(HashIndex)`. Diagrams show distribution of collusions in current hash function, there are spikes in some functions that affect on speed of working with hash table.
+For searching uniformity I plot histograms `AmountOfCollusions(HashIndex)`. Diagrams show distribution of collusions in current hash function, there are spikes in some functions that affect on speed of working with hash table. 
 
-Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
+Test size of hash table for big tests was prime number! 
+
+Check theory in [wiki](https://en.wikipedia.org/wiki/Hash_function)
 
 ### Histograms
 
@@ -95,20 +101,20 @@ Check theory in [hash in wiki](https://en.wikipedia.org/wiki/Hash_function)
 4. <U> Sum of letters Hash </U>: Size 1500, Max Collusion: 31.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b612478f-ee30-4f81-b9f1-ca258164eb21" width = 100%>
 
-5. <U> (Sum of letters)/Length Hash </U>: Size 170, Max Collusion: 636.
+5. <U> (Sum of letters)/Length Hash </U>: Size 179, Max Collusion: 636.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 100%>
 
-6. <U> ROR Hash </U>: Size 6000, Max Collusion: 30.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4380511a-43c4-4d3f-8976-7162019bf5d7" width = 100%>
+6. <U> ROR Hash </U>: Size 6007, Max Collusion: 30.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/16fe4f77-fb2a-4fe9-ab0a-5b0608c9d4b5" width = 100%>
 
-7. <U> ROL Hash </U>: Size 6000, Max Collusion: 9.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/2c8f85a8-bb16-4377-a17d-7bd4db5c3ada" width = 100%>
+7. <U> ROL Hash </U>: Size 6007, Max Collusion: 9.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b96af6bd-cf03-4f2f-bf46-73da561749ec" width = 100%>
 
-8. <U> CRC32 Hash </U>: Size 6000, Max Collusion: 8.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8df2c5e7-8880-4d13-aead-8fa2f3f7ccf9" width = 100%>
+1. <U> CRC32 Hash </U>: Size 6007, Max Collusion: 5.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/bc20032b-c720-48ce-9bf8-7b4f57fc8b0d" width = 100%>
 
-9.  <U> ElfHash </U>: Size 6000, Max Collusion: 9.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/284153f7-b80e-40f2-9b1d-a7c2bf185320" width = 100%>
+1.  <U> ElfHash </U>: Size 6007, Max Collusion: 6.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/60031a17-3a29-4486-8277-82cf592981ed" width = 100%>
 
 </strong></p>
 
@@ -124,12 +130,34 @@ This test is a goodness-of-fit measure: it's the actual distribution of items in
 
 After processing all function I plot histogram of chi-squared test:
 
-<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/1cc531eb-9256-4c9a-8e47-31c00856d194" width = 100%>
+<img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/af76129a-5e16-4917-ac91-bff43618bfd2" width = 100%>
 
-After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, MYHashFAQ6 and ROL Hash.
+After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, ElfHash and ROL Hash.
 
 ## Second Part
 
-I want to speed up my hash table. So I do stress tests: load big texts and finding some keys many times. After finding weak point I try to optimize it with help of SIMD, ASM inserts.
+I want to speed up my hash table. So I do stress tests: load big texts and finding some keys many times. 
+After finding weak point I try to optimize it with help of SIMD, ASM inserts.
 
-...
+Results of profiling are calculated by [`Perf`](https://perf.wiki.kernel.org/index.php/Tutorial) tool and vizualized by [HotSpot](https://github.com/KDAB/hotspot).
+
+I find in loop all words 512 times `StressTest()`.
+
+I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) to profile my hash table. After see console version Perf I decide to work in HotSpot where information is vizualized in application with hierarchy.
+
+**Console version:**
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/0b8bd9b2-27c3-4acc-af5a-6180e3de446e" width = 100%>
+
+**HotSpot version:**
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/89b9cfcd-e3fe-490a-b406-aa5daf825764" width = 100%>
+
+**Analysing Profilier**: (Size=6007, Hash: Elf Hash)
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/958211f8-5de4-44e5-948a-b7f096b8d9b7" width = 100%>
+
+I dont optimize functions like `InsertData` and `Dtor/Ctor` because they are single and use specific functions to work with files.
+
+That's why most weak points are `HT_Find`, `ElfHash`, `HT_Add`.
+
+### Optimization 
+
