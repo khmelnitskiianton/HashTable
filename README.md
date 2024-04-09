@@ -14,6 +14,7 @@ Project of searching and optimizing hash functions & hash table
     - [Uniformity](#uniformity)
   - [Second Part](#second-part)
     - [Optimization](#optimization)
+    - [Sum up Optimization](#sum-up-optimization)
 
 ## Installation
 
@@ -29,7 +30,7 @@ Create `./obj` & `./Perf/perf.data` file
 
 `make all` will do everything, set `TEST`,`SIZE`,`NAME_HASH` to manipulate tests and `CFLAGS`, `PERF`, `PERF_FLAGS` to perf profiling
 
-```c
+```bash
 git clone https://github.com/khmelnitskiianton/HashTable.git
 cd ./HashTable
 make all    #for histograms
@@ -39,7 +40,7 @@ make all    #for histograms
 
 GCC compilier, Makefile for collection, Python & Seaborn to draw histograms.
 
-```c
+```bash
 sudo apt update && sudo apt upgrade                           #update
 sudo apt install build-essential                              #gcc
 sudo apt install make                                         #makefile
@@ -141,7 +142,7 @@ After finding weak point I try to optimize it with help of SIMD, ASM inserts.
 
 Results of profiling are calculated by [`Perf`](https://perf.wiki.kernel.org/index.php/Tutorial) tool and vizualized by [HotSpot](https://github.com/KDAB/hotspot).
 
-I find in loop all words 512 times `StressTest()`.
+I find in loop all words 256 times `StressTest()`.
 
 I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) to profile my hash table. After see console version Perf I decide to work in HotSpot where information is vizualized in application with hierarchy.
 
@@ -153,11 +154,64 @@ I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-g
 
 **Analysing Profilier**: (Size=6007, Hash: Elf Hash)
 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/958211f8-5de4-44e5-948a-b7f096b8d9b7" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/ef78e3a1-ec0b-4a28-b44c-4fde2106eff2" width = 100%>
 
 I dont optimize functions like `InsertData` and `Dtor/Ctor` because they are single and use specific functions to work with files.
 
-That's why most weak points are `HT_Find`, `ElfHash`, `HT_Add`.
+That's why most weak points are `HT_Find`, `ElfHash`
 
 ### Optimization 
 
+1. **Inline Optimization:**
+   
+> Percantages in Perf aren't fixed, because it depends of processors working. That's why I have deviation $\pm 2\%$
+
+First I decide to make search functions inline because this functions are called everytime but its body small, thats why it waste time only on calling. So I put this functions in headers and use `inline __attribute__((always_inline))`
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b846d5e7-adb4-4eda-88a0-defe33100d54" width = 100%>
+
+> [GCC](https://microsin.net/programming/avr/gcc-inline-functions.html) does not embed any functions when optimization is not being done, except if you specify the always_inline attribute for the function `inline __attribute__((always_inline))`. That's why if you work with -O0 GCC will not done insertion  with only `inline` (I find out it in profilier).
+
+I count boost with summing percantages of workload:
+
+$boost_1 = \Delta(speed) = worload_{before} - workload_{after} = (3\% + 18.75\% + 24.58\% + 8.41\%) - 50.46\% = 4,28\%$, its net gain of inline optimizations (-O0 used). 
+
+2. **GCC Optimization:**
+   
+I decided to add compilier optimization with -O1 to see what boost i will have.
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4f14d99e-dfca-4258-b4a9-d95985138dfc" width = 100%>
+
+$boost_2 = 9\%$, in stress test function
+
+1. **Hash Optimization:**
+
+First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/HashAsm.nasm). it gives zero effect on workload.
+
+That's why I change Elf Hash for CRC32 Hash. 
+
+First version is dry many cycles of table:
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/edb14082-895a-488f-a2d8-8ec31106f469" width = 100%>
+
+Second version add const table of polynom, speed equal to Elf Hash:
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/7768dfae-09c1-470f-9a58-05dd5c447a02" width = 100%>
+
+Third version has SSE intrinsic CRC32 `_mm_crc32_u8 (crc, char)`:
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d9b1013c-d17d-46b2-9522-e1c1d4c88156" width = 100%>
+
+$boost_3 = 6\%$ finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
+
+4. **STRCMP Optimization:**
+
+...
+
+5. **ASM Optimization:**
+  
+...
+
+### Sum up Optimization
+
+...

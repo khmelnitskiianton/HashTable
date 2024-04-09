@@ -8,7 +8,25 @@ with open('Processing/dictionary.txt', 'w', encoding="ascii") as file_dst:
             file_dst.write(ch)
             continue
         if ch.isspace() == True:
-            if (counter_spaces == 1):
+            if (counter_spaces >= 1):
                 continue
             file_dst.write('\n')
             counter_spaces += 1
+        if (ch == '-'):
+            if (counter_spaces >= 1):
+                continue
+            file_dst.write('\n')
+            counter_spaces += 1
+
+x = []
+with open('Processing/dictionary.txt', 'r', encoding="ascii") as file_read:
+    y = file_read.readlines()
+    for line in y:
+        word = line.strip().split()[0]
+        #print(word)
+        x.append(len(word))
+    print(max(x))
+    for line in y:
+        word = line.strip().split()[0]
+        if (len(word) == max(x)):
+            print(word)

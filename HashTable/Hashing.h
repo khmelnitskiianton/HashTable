@@ -11,7 +11,15 @@ size_t SumHash          (const char* str);
 size_t SumLengthHash    (const char* str);
 size_t RORHash          (const char* str);
 size_t ROLHash          (const char* str);
+
+#define ASM_HASH
+
+#ifndef ASM_HASH
+size_t ElfHash      (const char* str);
+#else
+extern "C" size_t ElfHash (const char* str);
+#endif
+
 size_t Crc32Hash        (const char* str);
-size_t ElfHash          (const char* str);
 
 #endif

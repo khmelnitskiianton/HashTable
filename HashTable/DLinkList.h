@@ -29,6 +29,17 @@ int         DLL_PopBack     (DLL_LinkList_t* myLinkList);
 
 DLL_Node_t* DLL_Insert      (DLL_Node_t* InsertNode, DLL_Elem_t InsertValue);
 int         DLL_Erase       (DLL_Node_t* EraseNode);
-DLL_Node_t* DLL_Find        (DLL_Elem_t Value, DLL_LinkList_t* myLinkList);
+
+inline __attribute__((always_inline)) DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
+{
+    DLL_Node_t* CurrentNode = myLinkList->Head;
+    
+    while(CurrentNode != NULL)
+    {
+        if (DLL_Compare(CurrentNode->Value, Value)) return CurrentNode;
+        CurrentNode = CurrentNode->Next;
+    }
+    return NULL;
+}
 
 #endif

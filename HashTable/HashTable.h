@@ -22,6 +22,15 @@ int         HT_Dtor         (HashTable_t* myHashTable);
 int         HT_InitItem     (HT_Item_t* CurrentItem);
 int         HT_CloseItem    (HT_Item_t* CurrentItem);
 int         HT_Add          (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
-DLL_Node_t* HT_Find         (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
+
+inline __attribute__((always_inline)) DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
+{
+    size_t hash = myHashTable->HashFunction(Key);
+    size_t index = hash % (myHashTable->Size);
+    DLL_Elem_t NewValue = {hash, Key, Value, 1};
+    //check for collusion
+    DLL_Node_t* FindNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
+    return FindNode;
+}
 
 #endif

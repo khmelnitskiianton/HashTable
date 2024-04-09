@@ -3,18 +3,6 @@
 #include <stdlib.h>
 
 #include "DLinkList.h"
-
-//=======================================================================================
-//Change Depending on type of element
-bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
-{
-    if (strcmp(val1.Key,val2.Key))  return false;
-    if (val1.Value  != val2.Value)  return false;
-    //occurance not depend
-    return true; 
-}
-//=======================================================================================
-
 #include <assert.h>
 
 #define RED "\033[1;31m"
@@ -207,16 +195,3 @@ int DLL_Erase (DLL_Node_t* EraseNode)
 
     return 1;
 }
-
-DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
-{
-    DLL_Node_t* CurrentNode = myLinkList->Head;
-    
-    while(CurrentNode != NULL)
-    {
-        if (DLL_Compare(CurrentNode->Value, Value)) return CurrentNode;
-        CurrentNode = CurrentNode->Next;
-    }
-    return NULL;
-}
-

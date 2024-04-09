@@ -14,7 +14,18 @@ typedef struct DLL_Elem {
     size_t      Occurance;
 }  DLL_Elem_t;
 
-bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2);
+#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+
+//=======================================================================================
+//Change Depending on type of element
+inline __attribute__((always_inline)) bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
+{
+    //occurance not depend
+    return !((strcmp(val1.Key,val2.Key)) || (val1.Value  != val2.Value)); 
+    //return !((memcmp(val1.Key,val2.Key, MIN(strlen(val1.Key), strlen(val2.Key)))) || (val1.Value  != val2.Value));
+}
+//=======================================================================================
 
 const DLL_Elem_t POISON_ELEMENT = {0, NULL, 0};
 

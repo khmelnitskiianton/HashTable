@@ -11,8 +11,10 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData);
 int StressTest(HashTable_t* HashTable, Information_t* InfoData);
 int WriteData(HashTable_t* HashTable, Information_t* InfoData);
 
+#define AMOUNT_TESTS 256
+
 int main(int argc, char** argv)
-{
+{ 
     if (argc < 5) 
     {
         printf("no args\n");
@@ -107,7 +109,7 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData)
 
 int StressTest(HashTable_t* HashTable, Information_t* InfoData)
 {
-    for (size_t i = 0; i < 64; i++)
+    for (size_t i = 0; i < AMOUNT_TESTS; i++)
     {
         for (size_t j = 0; j < (InfoData->n_strings); j++)
         {
