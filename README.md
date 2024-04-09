@@ -182,7 +182,7 @@ I decided to add compilier optimization with -O1 to see what boost i will have.
 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4f14d99e-dfca-4258-b4a9-d95985138dfc" width = 100%>
 
-$boost_2 = 9\%$, in stress test function
+$boost_2 = 9$%, in stress test function
 
 1. **Hash Optimization:**
 
@@ -202,7 +202,7 @@ Third version has SSE intrinsic CRC32 `_mm_crc32_u8 (crc, char)`:
 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d9b1013c-d17d-46b2-9522-e1c1d4c88156" width = 100%>
 
-$boost_3 = 6\%$ finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
+$boost_3 = 6$% finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
 
 4. **STRCMP Optimization:**
 
