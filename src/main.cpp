@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <x86intrin.h>
 
 #include "../HashTable/DLinkList.h"
 #include "../HashTable/HashTable.h"
@@ -11,7 +12,8 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData);
 int StressTest(HashTable_t* HashTable, Information_t* InfoData);
 int WriteData(HashTable_t* HashTable, Information_t* InfoData);
 
-#define AMOUNT_TESTS 256
+const size_t AMOUNT_TESTS = 256;
+const unsigned long long clock_speed_spu = 3000000000;
 
 int main(int argc, char** argv)
 { 
@@ -102,19 +104,24 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData)
 {
     for (size_t i = 0; i < (InfoData->n_strings); i++)
     {
-        HT_Add(HashTable, (InfoData->string_buffer+i)->StartLine, 0);
+        HT_Add(HashTable, (InfoData->string_buffer+i)->StartLine, (InfoData->string_buffer+i)->Length);
     }
     return 1;
 }
 
 int StressTest(HashTable_t* HashTable, Information_t* InfoData)
 {
+    size_t t1 = __rdtsc();
     for (size_t i = 0; i < AMOUNT_TESTS; i++)
     {
         for (size_t j = 0; j < (InfoData->n_strings); j++)
         {
-            HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, 0);
+            DLL_Node_t* FindNode = HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, (InfoData->string_buffer+i)->Length);
+            if (FindNode) printf("%c\n", FindNode->Value.Key[0]);
         }
     }
+    size_t t2 = __rdtsc();
+    size_t time = (t2 - t1);
+    printf("\n>>> Time of StressTest: %lu\n", time);
     return 1;
 }

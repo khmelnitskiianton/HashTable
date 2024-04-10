@@ -7,6 +7,8 @@
 #include "myassert.h"
 #include "creator.h"
 
+static const size_t ALIGNING = 16;
+
 EnumOfErrors InfoCtor (Information_t* InfoData, const char* file_read, const char* file_write)
 {
     MYASSERT(file_read, ERR_WHAT_FILE_OF_DATA, return ERR_WHAT_FILE_OF_DATA)
@@ -20,7 +22,7 @@ EnumOfErrors InfoCtor (Information_t* InfoData, const char* file_read, const cha
 
     InfoData->size_text = FileSize (InfoData->file_text);
 
-    InfoData->text_buffer = (char*) calloc (InfoData->size_text + 1, sizeof (char));
+    InfoData->text_buffer = (char*) calloc (InfoData->size_text + 16, sizeof (char));
     MYASSERT(InfoData->text_buffer, ERR_BAD_CALLOC, return ERR_BAD_CALLOC)
     size_t result_size = fread (InfoData->text_buffer, 1, InfoData->size_text, InfoData->file_text);
 
@@ -70,6 +72,18 @@ EnumOfErrors InfoCtor (Information_t* InfoData, const char* file_read, const cha
         if (ptr_buffer[index] == '\n') ptr_buffer[index] = '\0';
         index++;
     }
+    //==============================
+    //aligning
+    char* aligned_buffer = (char*) aligned_alloc (ALIGNING, sizeof (char) * ALIGNING * ((InfoData->n_strings)+1));
+    memset(aligned_buffer, 0, sizeof (char) * ALIGNING * ((InfoData->n_strings)+1));
+    for (size_t i = 0; i < (InfoData->n_strings);i++)
+    {
+        memcpy((aligned_buffer + ALIGNING*i), (InfoData->string_buffer+i)->StartLine, (InfoData->string_buffer+i)->Length);
+        (InfoData->string_buffer+i)->StartLine = (aligned_buffer + ALIGNING*i);
+    }
+    free(InfoData->text_buffer);
+    InfoData->text_buffer = aligned_buffer;
+    //==============================
     return ERR_OK;   
 }
 

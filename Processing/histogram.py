@@ -12,7 +12,7 @@ if __name__ == "__main__":
 #Plot
 
 path1 = "./Processing/data.txt"
-file1 = "./Processing/pictures/output" + param + ".png"
+file1 = "./pictures/pictures/output" + param + ".png"
 xs = []
 ys = []
 counter = 0

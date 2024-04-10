@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <emmintrin.h>
+#include <smmintrin.h>
 
 #include "DLinkList.h"
 #include <assert.h>
@@ -80,7 +82,7 @@ int DLL_InitNode  (DLL_Node_t* NewNode)
 DLL_Node_t* DLL_PushFront (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
 {
     MYASSERT(myLinkList, BAD_POINTER_PASSED_IN_FUNC, return 0)
-    DLL_Node_t* NewNode = (DLL_Node_t*) calloc (1,sizeof (DLL_Node_t));
+    DLL_Node_t* NewNode = (DLL_Node_t*) calloc (16, sizeof (DLL_Node_t));
     MYASSERT(NewNode, CRASH_IN_CALLOC_OF_NODE, return 0)
     
     DLL_InitNode(NewNode);

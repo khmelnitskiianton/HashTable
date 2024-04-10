@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <emmintrin.h>
+#include <smmintrin.h>
 
 #include "DLinkList.h"
 #include "HashTable.h"
 
-int HT_Ctor(HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t))
+int HT_Ctor(HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t, HT_Value_t))
 {
     if (Size > HT_MAX_CAPACITY) return 0;
     myHashTable->Size         = Size;
@@ -43,12 +45,12 @@ int HT_CloseItem(HT_Item_t* CurrentItem)
     free(CurrentItem->DList);
     return 1;
 }
-
+ 
 int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
 {
-    size_t hash = myHashTable->HashFunction(Key);
+    size_t hash = myHashTable->HashFunction(Key, Value);
     size_t index = hash % (myHashTable->Size);
-    DLL_Elem_t NewValue = {hash, Key, Value, 1};
+    DLL_Elem_t NewValue = {Key, hash, Value, 1};
     //check for collusion
     DLL_Node_t* CopyNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
     if (!CopyNode)

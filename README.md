@@ -160,6 +160,8 @@ I dont optimize functions like `InsertData` and `Dtor/Ctor` because they are sin
 
 That's why most weak points are `HT_Find`, `ElfHash`
 
+I check time of running stress test with `__rdtsc()`
+
 ### Optimization 
 
 1. **Inline Optimization:**
@@ -172,25 +174,23 @@ First I decide to make search functions inline because this functions are called
 
 > [GCC](https://microsin.net/programming/avr/gcc-inline-functions.html) does not embed any functions when optimization is not being done, except if you specify the always_inline attribute for the function `inline __attribute__((always_inline))`. That's why if you work with -O0 GCC will not done insertion  with only `inline` (I find out it in profilier).
 
-I count boost with summing percantages of workload:
+Boost = 9%
 
-$boost_1 = \Delta(speed) = worload_{before} - workload_{after} = (3 + 18.75 + 24.58+ 8.41 - 50.46 = 4,28$%, its net gain of inline optimizations (-O0 used). 
-
-2. **GCC Optimization:**
+1. **GCC Optimization:**
    
-I decided to add compilier optimization with -O1 to see what boost i will have.
+I decided to add compilier optimization with -O2 to see what boost i will have.
 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4f14d99e-dfca-4258-b4a9-d95985138dfc" width = 100%>
 
-$boost_2 = 9$%, in stress test function
+Boost = 90% in stress test function
 
 1. **Hash Optimization:**
 
-First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/HashAsm.nasm). it gives zero effect on workload.
+First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/HashAsm.nasm). It gives zero effect on workload.
 
 That's why I change Elf Hash for CRC32 Hash. 
 
-First version is dry many cycles of table:
+First version is dry qith many cycles to process table:
 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/edb14082-895a-488f-a2d8-8ec31106f469" width = 100%>
 
@@ -202,15 +202,28 @@ Third version has SSE intrinsic CRC32 `_mm_crc32_u8 (crc, char)`:
 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d9b1013c-d17d-46b2-9522-e1c1d4c88156" width = 100%>
 
-$boost_3 = 6$% finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
+Boost = 78% finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
 
 4. **STRCMP Optimization:**
 
-...
+After all optimizations the most workload process is `strcmp()`. I use AVX instructions. First I want to align my buffer, because SIMD instructions depend on cash, and buffer that upload to cash depends on address situation([article](https://habr.com/ru/companies/intel/articles/262933/)).
 
-5. **ASM Optimization:**
-  
-...
+That's why first action is align buffer that I get from [Onegin](https://github.com/khmelnitskiianton/Onegin).
+I use `aligned_alloc(ALIGNING, bytes)` + `memset()` than copy my words from text_buffer to new, aligned buffer and work with it.
+
+On `-O1` it will be 20% boost, but on `-O2` it's insignificant.
+
+In my dictionary longest word has 14 symbols, that's why I use for 16byte words `__m128`
+
+```c
+__m128i str1 = _mm_load_si128((const __m128i *) (val1.Key));
+__m128i str2 = _mm_load_si128((const __m128i *) (val2.Key));
+__m128i cmp  = _mm_cmpeq_epi8 (str1, str2);
+int result   = _mm_movemask_epi8 (cmp);
+return ((result == 0xFFFF) && (val1.Value == val2.Value));
+```
+
+
 
 ### Sum up Optimization
 

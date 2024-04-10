@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 path2 = "./Processing/chi.txt"
-file2 = "./Processing/chi.png"
+file2 = "./pictures/chi.png"
 
 #Plot
 xs = []
