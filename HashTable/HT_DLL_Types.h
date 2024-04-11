@@ -22,11 +22,6 @@ typedef struct DLL_Elem {
 inline __attribute__((always_inline)) bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
 {
     //occurance not depend
-    //__m128i str1 = _mm_load_si128((const __m128i *) (val1.Key));
-    //__m128i str2 = _mm_load_si128((const __m128i *) (val2.Key));
-    //__m128i cmp  = _mm_cmpeq_epi8 (str1, str2);
-    //int result   = _mm_movemask_epi8 (cmp);
-    //return ((result == 0xFFFF) && (val1.Value == val2.Value));
     return !((strcmp(val1.Key,val2.Key)) || (val1.Value != val2.Value)); 
 }
 //=======================================================================================

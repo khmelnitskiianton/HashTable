@@ -82,6 +82,7 @@ size_t ROLHash (const char* str, size_t length)
   MaxLen: 268 435 455 байт (2 147 483 647 бит) - обнаружение
    одинарных, двойных, пакетных и всех нечетных ошибок
 */
+
 //const size_t Crc32Table[256] = {                       //for 2 version CRC32
 //    0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA,
 //    0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3,
@@ -149,27 +150,29 @@ size_t ROLHash (const char* str, size_t length)
 //    0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D
 //};
 
+#ifndef ASM_HASH
 size_t Crc32Hash(const char *str, size_t length)
 {
     size_t crc = 0xFFFFFFFFUL;
     for (size_t i = 0; i < length; i++)
-    {
-        crc = _mm_crc32_u8 (crc, *str++);
-    }
+        crc = _mm_crc32_u8 (crc, str[i]); 
+
+    //while (length--)
+    //    crc = Crc32Table[(crc ^ *str++) & 0xFF] ^ (crc >> 8);
+    
     return crc ^ 0xFFFFFFFFUL;
 }
+#endif
 
-#ifndef ASM_HASH
-size_t ElfHash(const char *s)
+size_t ElfHash(const char *str, size_t length)
 {
     size_t h = 0, high = 0;
-    while (*s)
+    while (*str)
     {
-        h = (h << 4) + *s++;
+        h = (h << 4) + *str++;
         if (high = h & 0xF0000000)
             h ^= high >> 24;
         h &= ~high;
     }
     return h;
 }
-#endif

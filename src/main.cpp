@@ -117,7 +117,7 @@ int StressTest(HashTable_t* HashTable, Information_t* InfoData)
         for (size_t j = 0; j < (InfoData->n_strings); j++)
         {
             DLL_Node_t* FindNode = HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, (InfoData->string_buffer+i)->Length);
-            if (FindNode) printf("%c\n", FindNode->Value.Key[0]);
+            if (FindNode) printf("%c", FindNode->Value.Key[0]);
         }
     }
     size_t t2 = __rdtsc();
