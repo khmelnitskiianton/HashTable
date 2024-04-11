@@ -2,10 +2,10 @@
 ;                               MAIN NASM FOR HASH ON ASM                               |
 ;========================================================================================
 
-global ElfHash
-global Crc32Hash
-
-section .text
+;global ElfHash
+;global Crc32Hash
+;
+;section .text
 
 ;================
 
