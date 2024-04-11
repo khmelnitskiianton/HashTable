@@ -158,7 +158,7 @@ I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-g
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/ef78e3a1-ec0b-4a28-b44c-4fde2106eff2" width = 100%>
 
 **HotSpot version:**
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/89b9cfcd-e3fe-490a-b406-aa5daf825764" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6a564442-141e-4e42-bdbe-98ce62c61835" width = 100%>
 
 **Analysing Profilier**: (Size=6007, Hash: Elf Hash)
 
@@ -188,7 +188,7 @@ First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnit
 
 That's why I change Elf Hash for CRC32 Hash. 
 
-First version is dry qith many cycles to process table.
+First version is dry with many cycles to process table.
 
 Second version add const table of polynom, speed equal to Elf Hash.
 
