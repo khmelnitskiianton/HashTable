@@ -172,7 +172,7 @@ First time of stress test - 1068867215 ticks
 
 ### Optimization 
 
-1. **Inline Optimization:**
+0. **Inline Optimization:**
    
 > Ticks aren't fixed because cpu frequency isn't constant. That's why I have deviation $\pm 2\%$
 
@@ -222,7 +222,7 @@ It has educational aim. Diffrence between writing with `_mm_crc32_u64` or with `
 
 New time of stress test - 930319130 ticks (10% boost) finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
 
-1. **STRCMP Optimization:**
+2. **STRCMP Optimization:**
 
 After all optimizations the most workload process is `strcmp()`. I use AVX instructions. 
 
