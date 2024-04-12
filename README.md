@@ -113,10 +113,10 @@ Check theory in [wiki](https://en.wikipedia.org/wiki/Hash_function)
 7. <U> ROL Hash </U>: Size 6007, Max Collusion: 9.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4462c3f8-3ebb-4fe1-91e2-b770c9913388" width = 100%>
 
-1. <U> CRC32 Hash </U>: Size 6007, Max Collusion: 5.
+8. <U> CRC32 Hash </U>: Size 6007, Max Collusion: 5.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/1b3654c0-ebb3-4489-b8b3-0907d9eed7ad" width = 100%>
 
-1.  <U> ElfHash </U>: Size 6007, Max Collusion: 6.
+9.  <U> ElfHash </U>: Size 6007, Max Collusion: 6.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/61f15010-a60d-4ada-bb0b-04395331352c" width = 100%>
 
 </strong></p>
