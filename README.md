@@ -184,7 +184,7 @@ New time of stress test - 1044157965 ticks. No boost on `-O3` because on this le
 
 1. **Hash Optimization:**
 
-First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/HashAsm.nasm). It gives zero effect on workload.
+First I optimized hash by rewriting [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/AsmFunctions.nasm). It gives zero effect on workload.
 
 That's why I change Elf Hash for CRC32 Hash. 
 
@@ -257,7 +257,7 @@ New time of stress test - 556178924 ticks (32% boost)
 
 ### Sum up Optimization
 
-After all optimizations I get boost 1.7x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
+After all optimizations I get boost 1.8x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
 
 |Optimization            |Ticks      |Boost|
 |------------------------|-----------|-----|
@@ -271,4 +271,4 @@ In this project I use Profilier (Perf & HotSpot) to see weak points in my progra
 
 Final result is awesome, I find ways how I can speed up my program despite GCC optimizations!
 
-$DedInsideCoeff = \frac{boost}{amount \space asm-strings} \cdot 100 = \frac{180}{12} = 15$ !
+$DedInsideCoeff = \frac{boost}{amount \space asm \space strings} \cdot 100 = \frac{192}{12} = 16$ !
