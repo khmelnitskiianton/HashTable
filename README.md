@@ -92,22 +92,22 @@ Check theory in [wiki](https://en.wikipedia.org/wiki/Hash_function)
 
 <p> <strong>
 
-1. <U> 0 Hash </U>: Size: 10, Max Collusion: 5335. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/d3cc18d6-5d7d-4beb-b994-02d377d89f0f" width = 100%>
+1. <U> 0 Hash </U>: Size: 10, Max Collusion: 4788. 
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/96c683bd-4517-4a3b-b01a-3369ceee4f81" width = 100%>
 
-2. <U> First Letter Hash </U>: Size: 128, Max Collusion: 521. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4d82c0d1-cc18-4fbf-ad78-0512cb11cb51" width = 100%>
+2. <U> First Letter Hash </U>: Size: 128, Max Collusion: 461. 
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b9d41ce5-c9a2-48a0-8163-fcb986833191" width = 100%>
 
-3. <U> Length Word Hash </U>: Size 30, Max Collustion: 1023. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/99be4a00-f5a3-441d-a1f5-9bf6a16c35ae" width = 100%>
+3. <U> Length Word Hash </U>: Size 30, Max Collustion: 929. 
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/57b06bba-ba51-4afd-92de-2ecc29120fd8" width = 100%>
 
 4. <U> Sum of letters Hash </U>: Size 1500, Max Collusion: 31.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b612478f-ee30-4f81-b9f1-ca258164eb21" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/50dbd0c6-556f-4271-97d6-f23fd0059b6c" width = 100%>
 
-5. <U> (Sum of letters)/Length Hash </U>: Size 179, Max Collusion: 636.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 100%>
+5. <U> (Sum of letters)/Length Hash </U>: Size 179, Max Collusion: 542.
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/5b5f7788-5f04-45b0-baa5-377dca79f93d" width = 100%>
 
-6. <U> ROR Hash </U>: Size 6007, Max Collusion: 30.
+6. <U> ROR Hash </U>: Size 6007, Max Collusion: 27.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b8276c9e-3c0d-45ed-8dd6-0804990ff27c" width = 100%>
 
 7. <U> ROL Hash </U>: Size 6007, Max Collusion: 9.

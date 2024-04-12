@@ -66,7 +66,9 @@ int main(int argc, char** argv)
     
     WriteData(&MainHashTable, &InfoData);
 
+#ifdef TESTING
     StressTest(&MainHashTable, &InfoData);
+#endif
 
     InfoDtor(&InfoData);
     HT_Dtor(&MainHashTable);

@@ -39,7 +39,7 @@ ax.set_title(name_hash, fontweight="bold")
 #sns.set(context="notebook",font="Sans", font_scale=1.3, style = "whitegrid", color_codes=True, palette="husl")
 #sns_plot = sns.barplot(data = ht_data, x='x', y='y', ax = ax)
 sns_plot = plt.bar(ht_data['x'], ht_data['y'], 10)
-#ax.xaxis.set_major_locator(ticker.MaxNLocator(60))
+ax.xaxis.set_major_locator(ticker.MaxNLocator(60))
 
 ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 plt.grid()  #just add this

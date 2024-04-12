@@ -39,6 +39,7 @@ size_t SumHash (const char* str, size_t length)
 
 size_t SumLengthHash (const char* str, size_t length)
 {
+    if (!length) return 0;
     size_t i = 0;
     size_t summ = 0;
     while (str[i] != '\0')

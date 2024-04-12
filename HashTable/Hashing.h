@@ -13,8 +13,6 @@ size_t RORHash          (const char* str, size_t length);
 size_t ROLHash          (const char* str, size_t length);
 size_t ElfHash          (const char* str, size_t length);
 
-#define ASM_HASH 
-
 #ifndef ASM_HASH
 size_t Crc32Hash        (const char* str, size_t length);
 #else
