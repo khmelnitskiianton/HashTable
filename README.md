@@ -260,7 +260,7 @@ New time of stress test - 556178924 ticks (32% boost)
 After all optimizations I get boost 1.8x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
 
 |Optimization            |Ticks      |Boost(compare with begining)|
-|------------------------|-----------|-----|
+|:------------------------:|-----------:|:-----:|
 |Start with `-O3`        |1068867215 |1x   |
 |Inlining                |1044157965 |1.03x|
 |Vectorization Crc32     |930319130  |1.15x|
