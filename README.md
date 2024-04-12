@@ -180,7 +180,7 @@ First I decide to make search functions inline because this functions are called
 
 > [GCC](https://microsin.net/programming/avr/gcc-inline-functions.html) does not embed any functions when optimization is not being done, except if you specify the always_inline attribute for the function `inline __attribute__((always_inline))`. That's why if you work with -O0 GCC will not done insertion  with only `inline` (I find out it in profilier).
 
-New time of stress test - 1044157965 ticks. No boost on `-O3` because on this level of optimization it make functions inlined itself.
+New time of stress test - 1044157965 ticks. No boost on `-O3` because on this level of optimization it makes functions inlined itself.
 
 1. **Hash Optimization:**
 
@@ -251,9 +251,21 @@ return ((result == 0xFFFF) && (val1.Value == val2.Value));
 
 New time of stress test - 556178924 ticks (32% boost)
 
+**Final report of Perf:**
+
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/9ec7a95d-d9c5-40ea-a5ce-cc1cbdea29d8" width = 100%>
+
 ### Sum up Optimization
 
 After all optimizations I get boost 1.7x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
+
+|Optimization            |Ticks      |Boost|
+|------------------------|-----------|-----|
+|Start with `-O3`        |1068867215 |1x   |
+|Inlining                |1044157965 |1.03x|
+|Vectorization Crc32     |930319130  |1.15x|
+|Aligning                |730164549  |1.46x|
+|Vectorization `strcmp()`|556178924  |1.92x|
 
 In this project I use Profilier (Perf & HotSpot) to see weak points in my program, then I use inlining, SIMD instructions, aligning and ASM inserts to get boost in speed.
 
