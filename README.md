@@ -18,7 +18,7 @@ Project of searching and optimizing hash functions & hash table
 
 ## Installation
 
-To start program you need to use CMake and run program
+To start program you need to use Makefile and run program
 
 1.  Clone repository
 2.  Run Makefile (compile program), write command in main directory in repo
@@ -65,7 +65,7 @@ int         HT_Dtor (HashTable_t* myHashTable);
 int         HT_Add  (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 ```
-In second part I optimizes speed of functions using SIMD & asm tricks.
+In second part I optimizes speed of functions using SIMD & ASM.
 
 ## First Part
 
@@ -108,16 +108,16 @@ Check theory in [wiki](https://en.wikipedia.org/wiki/Hash_function)
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/6e6f7c85-1395-492c-8a07-a8b259319a2a" width = 100%>
 
 6. <U> ROR Hash </U>: Size 6007, Max Collusion: 30.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/16fe4f77-fb2a-4fe9-ab0a-5b0608c9d4b5" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b8276c9e-3c0d-45ed-8dd6-0804990ff27c" width = 100%>
 
 7. <U> ROL Hash </U>: Size 6007, Max Collusion: 9.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b96af6bd-cf03-4f2f-bf46-73da561749ec" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4462c3f8-3ebb-4fe1-91e2-b770c9913388" width = 100%>
 
 1. <U> CRC32 Hash </U>: Size 6007, Max Collusion: 5.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/bc20032b-c720-48ce-9bf8-7b4f57fc8b0d" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/1b3654c0-ebb3-4489-b8b3-0907d9eed7ad" width = 100%>
 
 1.  <U> ElfHash </U>: Size 6007, Max Collusion: 6.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/60031a17-3a29-4486-8277-82cf592981ed" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/61f15010-a60d-4ada-bb0b-04395331352c" width = 100%>
 
 </strong></p>
 
@@ -135,7 +135,7 @@ After processing all function I plot histogram of chi-squared test:
 
 <img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/af76129a-5e16-4917-ac91-bff43618bfd2" width = 100%>
 
-After analysing we can see if hash function's chi tends to 1 is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, ElfHash and ROL Hash.
+After analysing we can see if hash function's chi tends to $\frac{m}{n} = 0.79$ is better in uniformity, its distribution is more homogeneous. Best in uniformity functions is CRC32, ElfHash and ROL Hash.
 
 ## Second Part
 
@@ -150,7 +150,7 @@ After finding weak point I try to optimize it with help of SIMD, ASM inserts.
 
 Results of profiling are calculated by [`Perf`](https://perf.wiki.kernel.org/index.php/Tutorial) tool and vizualized by [HotSpot](https://github.com/KDAB/hotspot).
 
-I find in loop all words 256 times `StressTest()`.
+I find in loop all words 256 times in `StressTest()`.
 
 I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) to profile my hash table. After see console version Perf I decide to work in HotSpot where information is vizualized in application with hierarchy.
 
@@ -162,19 +162,19 @@ I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-g
 
 **Analysing Profilier**: (Size=6007, Hash: Elf Hash)
 
-I dont optimize functions like `InsertData` and `Dtor/Ctor` because they are single and use specific functions to work with files.
+I don't optimize functions like `InsertData` and `Dtor/Ctor` because they are single and use specific functions to work with files.
 
 That's why most weak points are `HT_Find()`, `DLL_Find()`, `DLL_Compare()`, `ElfHash`, `strcmp()`, 
 
 I check time of running stress test with `__rdtsc()`
 
-First time of stress test - 1068867215 ticks.
+First time of stress test - 1068867215 ticks
 
 ### Optimization 
 
 1. **Inline Optimization:**
    
-> Percantages in Perf aren't fixed, because it depends of processors working. That's why I have deviation $\pm 2\%$
+> Ticks aren't fixed because cpu frequency isn't constant. That's why I have deviation $\pm 2\%$
 
 First I decide to make search functions inline because this functions are called everytime but its body small, thats why it waste time only on calling. So I put this functions in headers and use `inline __attribute__((always_inline))`
 
@@ -201,7 +201,6 @@ for (size_t i = 0; i < length; i++)
 return crc ^ 0xFFFFFFFFUL;
 ```    
 
-
 In fourth version I tried to write my code on `_mm_crc32_u64 (crc, *(uint64_t))` and try to write on assmeler with `asm()`:
 
 ```cpp
@@ -225,10 +224,12 @@ New time of stress test - 930319130 ticks (10% boost) finally result from changi
 
 1. **STRCMP Optimization:**
 
-After all optimizations the most workload process is `strcmp()`. I use AVX instructions. First I want to align my buffer, because SIMD instructions depend on cash, and buffer that upload to cash depends on address situation([article](https://habr.com/ru/companies/intel/articles/262933/)).
+After all optimizations the most workload process is `strcmp()`. I use AVX instructions. 
 
-That's why first action is align buffer that I get from [Onegin](https://github.com/khmelnitskiianton/Onegin).
-I use `aligned_alloc(ALIGNING, bytes)` + `memset()` than copy my words from text_buffer to new, aligned buffer and work with it.
+First I want to align my buffer, because SIMD instructions depend on cash, and buffer that upload to cash depends on address position([article](https://habr.com/ru/companies/intel/articles/262933/)).
+
+That's why first action is align buffer that I get from file of words.
+I use `aligned_alloc(ALIGNING, bytes)` + `memset()` than copy my words from text buffer to new, aligned buffer and work with it.
 
 New time of stress test - 730164549 ticks (21% boost)
 
@@ -246,16 +247,16 @@ int result   = _mm_movemask_epi8 (cmp);
 return ((result == 0xFFFF) && (val1.Value == val2.Value));
 ```
 
-> _mm_load_si128 needs aligning 16 bytes, without it it will be `load of misaligned address` aka SegFault 
+> _mm_load_si128 work faster than another load functions, but it needs aligning 16 bytes, without it it will be `load of misaligned address` aka SegFault 
 
 New time of stress test - 556178924 ticks (32% boost)
 
 ### Sum up Optimization
 
-After all optimizations I get boost 1.8x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
+After all optimizations I get boost 1.7x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
 
 In this project I use Profilier (Perf & HotSpot) to see weak points in my program, then I use inlining, SIMD instructions, aligning and ASM inserts to get boost in speed.
 
 Final result is awesome, I find ways how I can speed up my program despite GCC optimizations!
 
-$DedInsideCoeff = \frac{boost}{amount asm-strings} \cdot 100 = \frac{180}{12} = 15$ !
+$DedInsideCoeff = \frac{boost}{amount \space asm-strings} \cdot 100 = \frac{180}{12} = 15$ !
