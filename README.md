@@ -201,7 +201,7 @@ for (size_t i = 0; i < length; i++)
 return crc ^ 0xFFFFFFFFUL;
 ```    
 
-In fourth version I tried to write my code on `_mm_crc32_u64 (crc, *(uint64_t))` and try to write on assembler with `asm()`:
+In fourth version I write my code with `_mm_crc32_u64 (crc, *(uint64_t))` and try to do it on assembler with `asm()`:
 
 ```cpp
 size_t crc = -1;
