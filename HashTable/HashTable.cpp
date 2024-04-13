@@ -60,4 +60,14 @@ int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
     }
     CopyNode->Value.Occurance++;
     return 1;
-} 
+}
+
+DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
+{
+    size_t hash = myHashTable->HashFunction(Key, Value);
+    size_t index = hash % (myHashTable->Size);
+    DLL_Elem_t NewValue = {Key, hash, Value, 1};
+    //check for collusion
+    DLL_Node_t* FindNode = DLL_Find(NewValue, myHashTable->Items[index].DList);
+    return FindNode;
+}

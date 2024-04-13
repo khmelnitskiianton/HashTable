@@ -155,8 +155,12 @@ size_t ROLHash (const char* str, size_t length)
 size_t Crc32Hash(const char *str, size_t length)
 {
     size_t crc = 0xFFFFFFFFUL;
-    for (size_t i = 0; i < length; i++)
-        crc = _mm_crc32_u8 (crc, str[i]); 
+    
+    //for (size_t i = 0; i < length; i++)
+    //    crc = _mm_crc32_u8 (crc, str[i]); 
+
+    crc = _mm_crc32_u64 (crc, *((uint64_t*) str));
+    crc = _mm_crc32_u64 (crc, *(((uint64_t*)str) + 1)); 
 
     //while (length--)
     //    crc = Crc32Table[(crc ^ *str++) & 0xFF] ^ (crc >> 8);

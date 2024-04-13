@@ -55,7 +55,7 @@ EnumOfErrors InfoCtor (Information_t* InfoData, const char* file_read, const cha
 		length++;
 		if ((*(symbol + p) == '\n') && (*(symbol + p + 1) != '\0'))
 		{
-			(*(InfoData->string_buffer + amount)).Length = length-2;
+			(*(InfoData->string_buffer + amount)).Length = length-1;
 			amount++;
 			length = 0;
 			(*(InfoData->string_buffer + amount)).StartLine = symbol + p + 1;

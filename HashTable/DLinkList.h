@@ -30,7 +30,7 @@ int         DLL_PopBack     (DLL_LinkList_t* myLinkList);
 DLL_Node_t* DLL_Insert      (DLL_Node_t* InsertNode, DLL_Elem_t InsertValue);
 int         DLL_Erase       (DLL_Node_t* EraseNode);
 
-inline __attribute__((always_inline)) DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
+inline DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
 {
     DLL_Node_t* CurrentNode = myLinkList->Head;
     __m128i str1 = _mm_load_si128((const __m128i *) (Value.Key)); //load value ones

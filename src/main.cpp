@@ -12,8 +12,7 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData);
 int StressTest(HashTable_t* HashTable, Information_t* InfoData);
 int WriteData(HashTable_t* HashTable, Information_t* InfoData);
 
-const size_t AMOUNT_TESTS = 256;
-const unsigned long long clock_speed_spu = 3000000000;
+const size_t AMOUNT_TESTS = 512;
 
 int main(int argc, char** argv)
 { 
@@ -118,8 +117,8 @@ int StressTest(HashTable_t* HashTable, Information_t* InfoData)
     {
         for (size_t j = 0; j < (InfoData->n_strings); j++)
         {
-            DLL_Node_t* FindNode = HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, (InfoData->string_buffer+i)->Length);
-            if (FindNode) printf("%c", FindNode->Value.Key[0]);
+            volatile DLL_Node_t* FindNode = HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, (InfoData->string_buffer+j)->Length);
+            //if (FindNode) printf("%c", FindNode->Value.Key[0]);
         }
     }
     size_t t2 = __rdtsc();

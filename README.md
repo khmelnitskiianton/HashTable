@@ -142,7 +142,7 @@ After analysing we can see if hash function's chi tends to $\frac{m}{n} = 0.79$ 
 *System:*
 
 - Linux Mint 21.3 Cinnamon
-- 12th Gen Intel Core i5-12450H × 8
+- 12th Gen Intel Core i5-12450H x 8
 - GCC x86-64 -O3 -msse4.1 -msse4.2 -mavx2 -mavx
 
 I want to speed up my hash table. So I do stress tests: load big texts and finding some keys many times. 
@@ -150,7 +150,7 @@ After finding weak point I try to optimize it with help of SIMD, ASM inserts.
 
 Results of profiling are calculated by [`Perf`](https://perf.wiki.kernel.org/index.php/Tutorial) tool and vizualized by [HotSpot](https://github.com/KDAB/hotspot).
 
-I find in loop all words 256 times in `StressTest()`.
+I find in loop all words 512 times in `StressTest()`.
 
 I use [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) to profile my hash table. After see console version Perf I decide to work in HotSpot where information is vizualized in application with hierarchy.
 
@@ -168,19 +168,19 @@ That's why most weak points are `HT_Find()`, `DLL_Find()`, `DLL_Compare()`, `Elf
 
 I check time of running stress test with `__rdtsc()`
 
-First time of stress test - 1068867215 ticks
+First time of stress test - 1464801878 ticks
 
 ### Optimization 
 
 0. **Inline Optimization:**
    
-> Ticks aren't fixed because cpu frequency isn't constant. That's why I have deviation $\pm 2\%$
+> Ticks aren't fixed because cpu frequency isn't constant. That's why I have deviation $\pm 2$ %
 
-First I decide to make search functions inline because this functions are called everytime but its body small, thats why it waste time only on calling. So I put this functions in headers and use `inline __attribute__((always_inline))`
+First I decide to make search functions inline because this functions are called everytime but its body small, thats why it waste time only on calling. So I put this functions in headers and use `inline`
 
 > [GCC](https://microsin.net/programming/avr/gcc-inline-functions.html) does not embed any functions when optimization is not being done, except if you specify the always_inline attribute for the function `inline __attribute__((always_inline))`. That's why if you work with -O0 GCC will not done insertion  with only `inline` (I find out it in profilier).
 
-New time of stress test - 1044157965 ticks. No boost on `-O3` because on this level of optimization it makes functions inlined itself.
+New time of stress test - 1440749854 ticks. No boost on `-O3` because on this level of optimization it makes functions inlined itself.
 
 1. **Hash Optimization:**
 
@@ -192,7 +192,7 @@ First version is dry with many cycles to process table.
 
 Second version add const table of polynom, speed equal to Elf Hash.
 
-Third version has SSE intrinsic CRC32 `_mm_crc32_u8 (crc, char)`:
+Third version has SSE intrinsic CRC32 `_mm_crc32_u8 (crc, char)`, 1261751260 ticks:
 
 ```cpp
 size_t crc = 0xFFFFFFFFUL;
@@ -201,39 +201,51 @@ for (size_t i = 0; i < length; i++)
 return crc ^ 0xFFFFFFFFUL;
 ```    
 
-In fourth version I write my code with `_mm_crc32_u64 (crc, *(uint64_t))` and try to do it on assembler with `asm()`:
+I try to do it on assembler with `asm()`:
 
 ```cpp
-size_t crc = -1;
 asm(
-    ".intel_syntax noprefix                   \n"
-    "   mov     %[crc], -1                    \n"
-    "   mov     edx, 4294967295               \n"        
-    "   crc32   %[crc], QWORD PTR [%[str]]    \n"            
-    "   crc32   %[crc], QWORD PTR [%[str]+8]  \n"            
-    "   xor     rax, rdx                      \n"    
-    ".att_syntax prefix                       \n"
+    ".intel_syntax noprefix                     \n"
+    "   add     %[len], %[str]                  \n"
+    "   mov     edx, 4294967295                 \n"   
+    ".for_loop:                                 \n"  
+    "   mov     %[crc], rdx                     \n"  
+    "   add     %[str], 1                       \n" 
+    "   crc32   %[crc], byte ptr [%[str]-1]     \n" 
+    "   mov     rdx, %[crc]                     \n"
+    "   cmp     %[len], %[str]                  \n"
+    "   jne     .for_loop                       \n"        
+    "   not     %[crc]                          \n" 
+    ".att_syntax noprefix                       \n"
     : [crc] "=r" (crc)
-    : [str] "r"  (str)
+    : [str] "r"  (str), [len] "r"  (length)
 );
-return crc;
 ```
-It has educational aim. Diffrence between writing with `_mm_crc32_u64` or with `asm()` is zero.
+It has educational aim. Diffrence between writing with `_mm_crc32_u8()` or with `asm()` is zero.
 
-New time of stress test - 930319130 ticks (10% boost) finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
+Also I tried to write with `_mm_crc32_u64()`:
 
-2. **STRCMP Optimization:**
+```cpp
+size_t crc = 0xFFFFFFFFUL;    
+crc = _mm_crc32_u64 (crc, *((uint64_t*) str));
+crc = _mm_crc32_u64 (crc, *(((uint64_t*) str)+1));
+return crc ^ 0xFFFFFFFFUL; 
+```
 
-After all optimizations the most workload process is `strcmp()`. I use AVX instructions. 
+First result is bad, time is more than 3 times longer. I search reason of this (because its strange, 2 repetitions than loop).Then I found out that aligning plays an important role, because SIMD instructions depend on cash, and buffer that upload to cash depends on address position([article](https://habr.com/ru/companies/intel/articles/262933/)).
 
-First I want to align my buffer, because SIMD instructions depend on cash, and buffer that upload to cash depends on address position([article](https://habr.com/ru/companies/intel/articles/262933/)).
+> Spoiler: best speed is achieved when I choose setup `_mm_crc32_u64()` + `aligned_alloc()` then `_mm_crc32_u8()` + `calloc()`
 
 That's why first action is align buffer that I get from file of words.
 I use `aligned_alloc(ALIGNING, bytes)` + `memset()` than copy my words from text buffer to new, aligned buffer and work with it.
 
-New time of stress test - 730164549 ticks (21% boost)
+New time of stress test - 1055204350 ticks finally result from changing Elf Hash to CRC32 and optimized it with intrinsic.
 
 > I choose optimal aligning of 16 bytes. If I use more it will be no boost. If I use 8 or less it will be delaying. So I confirmed results of [article](https://habr.com/ru/companies/intel/articles/262933/).
+
+1. **STRCMP Optimization:**
+
+After all optimizations the most workload process is `strcmp()`. I use AVX instructions.
 
 *Intrinsics:*
 
@@ -247,28 +259,28 @@ int result   = _mm_movemask_epi8 (cmp);
 return ((result == 0xFFFF) && (val1.Value == val2.Value));
 ```
 
-> _mm_load_si128 work faster than another load functions, but it needs aligning 16 bytes, without it it will be `load of misaligned address` aka SegFault 
+> `_mm_load_si128()` work faster than another load functions, but it needs aligning 16 bytes, without it it will be `load of misaligned address` aka SegFault 
 
-New time of stress test - 556178924 ticks (32% boost)
+New time of stress test - 862053822 ticks
 
 **Final report of Perf:**
 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/9ec7a95d-d9c5-40ea-a5ce-cc1cbdea29d8" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/32edd8e2-a6fe-408c-82b8-2c2eb8477ccd" width = 100%>
 
 ### Sum up Optimization
 
-After all optimizations I get boost 1.8x - 2x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 2 times! 
+After all optimizations I get boost 1.7x - 1.8x (depends on current speed of my cpu)! Its incrediable, I outrun GCC optimization `-O3` almost by 1.71 times! 
 
 |Optimization            |Ticks      |Boost(compare with begining)|
 |:------------------------:|-----------:|:-----:|
-|Start with `-O3`        |1068867215 |1x   |
-|Inlining                |1044157965 |1.03x|
-|Vectorization Crc32     |930319130  |1.15x|
-|Aligning                |730164549  |1.46x|
-|Vectorization `strcmp()`|556178924  |1.92x|
+|Start with `-O3`        |1464801878|1x   |
+|Inlining                |1440749854|1.02x|
+|Vectorization Crc32     |1287858394|1.14x|
+|Aligning                |993603597|1.47x|
+|Vectorization `strcmp()`|858662731|1.71x|
 
 In this project I use Profilier (Perf & HotSpot) to see weak points in my program, then I use inlining, SIMD instructions, aligning and ASM inserts to get boost in speed.
 
 Final result is awesome, I find ways how I can speed up my program despite GCC optimizations!
 
-$DedInsideCoeff = \frac{boost}{amount \space asm \space strings} \cdot 100 = \frac{192}{12} = 16$ !
+$DedInsideCoeff = \frac{boost}{amount \space asm-strings} \cdot 100 = \frac{171}{12} = 14,25$ !

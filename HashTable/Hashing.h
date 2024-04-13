@@ -21,14 +21,19 @@ inline __attribute__((always_inline)) size_t Crc32Hash(const char *str, size_t l
     size_t crc = -1;
     asm(
         ".intel_syntax noprefix                     \n"
-        "   mov     %[crc], -1                      \n"
-        "   mov     edx, 4294967295                 \n"        
-        "   crc32   %[crc], QWORD PTR [%[str]]      \n"            
-        "   crc32   %[crc], QWORD PTR [%[str]+8]    \n"            
-        "   xor     rax, rdx                        \n"    
-        ".att_syntax prefix                         \n"
+        "   add     %[len], %[str]                  \n"
+        "   mov     edx, 4294967295                 \n"   
+        ".for_loop:                                 \n"  
+        "   mov     %[crc], rdx                     \n"  
+        "   add     %[str], 1                       \n" 
+        "   crc32   %[crc], byte ptr [%[str]-1]         \n" 
+        "   mov     rdx, %[crc]                     \n"
+        "   cmp     %[len], %[str]                  \n"
+        "   jne     .for_loop                       \n"        
+        "   not     %[crc]                          \n" 
+        ".att_syntax noprefix                         \n"
         : [crc] "=r" (crc)
-        : [str] "r" (str)
+        : [str] "r"  (str), [len] "r"  (length)
     );
     return crc;
 }
