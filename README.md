@@ -56,16 +56,16 @@ sudo apt-get install hotspot                                  #hotspot
 
 In this project I search diffrent hash functions for uniformity and optimize hash table.
 
-In first part I take many hash functions and create histograms. Data base consists of words from [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5k unique words). 
+In first part I take many hash functions and search them for homogenious distribution. Data base consists of words from [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5k unique words). 
 
-Hash Table bases on double linked list. Element has hash, key, value, occurance(no duplicates). 
+Hash Table bases on double linked list. Element has hash, key, value. 
 ```
 int         HT_Ctor (HashTable_t* myHashTable, size_t Size, size_t (*HashFunction) (HT_Key_t));
 int         HT_Dtor (HashTable_t* myHashTable);
 int         HT_Add  (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 ```
-In second part I optimizes speed of functions using SIMD & ASM.
+In second part I optimizes speed of functions using aligning, SIMD and assembler inserts.
 
 ## First Part
 
