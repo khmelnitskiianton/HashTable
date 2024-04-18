@@ -56,7 +56,7 @@ sudo apt-get install hotspot                                  #hotspot
 
 In this project I search diffrent hash functions for uniformity and optimize hash table.
 
-In first part I take many hash functions and create histograms. Data base consists of words from [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (32k words). 
+In first part I take many hash functions and create histograms. Data base consists of words from [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5k unique words). 
 
 Hash Table bases on double linked list. Element has hash, key, value, occurance(no duplicates). 
 ```
