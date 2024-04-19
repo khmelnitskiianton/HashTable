@@ -26,13 +26,12 @@ To start program you need to use Makefile and run program
 
 Configure Makefile to change hash function or data
 
-Create `./obj` & `./Perf/perf.data` file
-
 `make all` will do everything, set `TEST`,`SIZE`,`NAME_HASH` to manipulate tests and `CFLAGS`, `PERF`, `PERF_FLAGS` to perf profiling
 
 ```bash
 git clone https://github.com/khmelnitskiianton/HashTable.git
 cd ./HashTable
+make init    #create folders for temporary objects
 make all     #for histograms
 make test    #for perf test
 ```
@@ -279,8 +278,6 @@ After all optimizations I get boost 1.7x - 1.8x (depends on current speed of my 
 |Aligning                |993603597|1.47x|
 |Vectorization `strcmp()`|858662731|1.71x|
 
-In this project I use Profilier (Perf & HotSpot) to see weak points in my program, then I use inlining, SIMD instructions, aligning and ASM inserts to get boost in speed.
-
-Final result is awesome, I find ways how I can speed up my program despite GCC optimizations!
+In this project I search Hash Functions, use Profilier (Perf & HotSpot) to see weak points in my program, then I use inlining, SIMD instructions, aligning and ASM inserts to get boost in speed.
 
 $DedInsideCoeff = \frac{boost}{amount \space asm-strings} \cdot 100 = \frac{171}{12} = 14,25$ !

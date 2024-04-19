@@ -64,6 +64,11 @@ $(OBJ)/%.o: $(SRC_SRC)/%$(SRC_C_EXT) #Object with GCC
 $(OBJ)/%.o : $(SRC_ASM)/%$(SRC_ASM_EXT)			#Assemble with NASM -f elf64
 	nasm -f elf64 -l $@.lst $< -o $@
 
+.PHONY: init
+init:
+	mkdir obj
+	mkdir Perf
+
 .PHONY: all
 all: $(OUT)$(NAME) run draw chi clean
 
