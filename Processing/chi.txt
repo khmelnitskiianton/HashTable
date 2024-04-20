@@ -3,7 +3,7 @@ First_letter_Hash 2.59
 Length_word_Hash 2.12
 Sum_letters_Hash 1.42
 Sum/length_Hash 6.41
-ROR_Hash 1.01
-ROL_Hash 1.03
-CRC32_Hash 0.9
-ElfHash 0.84
+ROR_Hash 1.05
+ROL_Hash 0.938
+CRC32_Hash 0.846
+ElfHash 0.843

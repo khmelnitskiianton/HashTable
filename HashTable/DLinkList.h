@@ -30,6 +30,15 @@ int         DLL_PopBack     (DLL_LinkList_t* myLinkList);
 DLL_Node_t* DLL_Insert      (DLL_Node_t* InsertNode, DLL_Elem_t InsertValue);
 int         DLL_Erase       (DLL_Node_t* EraseNode);
 
+//=======================================================================================
+//Change Depending on type of element
+inline bool DLL_Compare(DLL_Elem_t val1, DLL_Elem_t val2)
+{
+    //occurance not depend
+    return !((strcmp(val1.Key,val2.Key)) || (val1.Value != val2.Value)); 
+}
+//=======================================================================================
+
 inline DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
 {
     DLL_Node_t* CurrentNode = myLinkList->Head;
@@ -42,7 +51,6 @@ inline DLL_Node_t* DLL_Find (DLL_Elem_t Value, DLL_LinkList_t* myLinkList)
         __m128i cmp  = _mm_cmpeq_epi64 (str1, str2);
         int result   = _mm_movemask_epi8 (cmp);
         if ((result == 0xFFFF) && (Value.Value == CurrentNode->Value.Value)) return CurrentNode;
-        
         CurrentNode = CurrentNode->Next;
     }
     return NULL;

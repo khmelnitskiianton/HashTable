@@ -62,7 +62,7 @@ int HT_Add(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
     return 1;
 }
 
-DLL_Node_t* HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
+DLL_Node_t* __attribute__ ((noinline)) HT_Find(HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value)
 {
     size_t hash = myHashTable->HashFunction(Key, Value);
     size_t index = hash % (myHashTable->Size);

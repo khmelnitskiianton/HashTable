@@ -175,7 +175,7 @@ size_t ElfHash(const char *str, size_t length)
     while (*str)
     {
         h = (h << 4) + *str++;
-        if (high = h & 0xF0000000)
+        if (high = (h & 0xF0000000))
             h ^= high >> 24;
         h &= ~high;
     }

@@ -8,9 +8,9 @@
 #include "myassert.h"
 #include "creator.h"
 
-int InsertData(HashTable_t* HashTable, Information_t* InfoData);
-int StressTest(HashTable_t* HashTable, Information_t* InfoData);
-int WriteData(HashTable_t* HashTable, Information_t* InfoData);
+int InsertData  (HashTable_t* HashTable, Information_t* InfoData);
+int StressTest  (HashTable_t* HashTable, Information_t* InfoData);
+int WriteData   (HashTable_t* HashTable, Information_t* InfoData);
 
 const size_t AMOUNT_TESTS = 512;
 
@@ -21,6 +21,8 @@ int main(int argc, char** argv)
         printf("no args\n");
         return 0;
     }
+
+    size_t t1 = __rdtsc();
 
     Information_t InfoData = {};
 
@@ -60,14 +62,17 @@ int main(int argc, char** argv)
         default: return 0; break;
     }
     //upload table
-
     InsertData(&MainHashTable, &InfoData);
-    
+
     WriteData(&MainHashTable, &InfoData);
 
 #ifdef TESTING
     StressTest(&MainHashTable, &InfoData);
 #endif
+
+    size_t t2 = __rdtsc();
+    size_t time = (t2 - t1);
+    printf("\n>>> Time of StressTest: %lu\n", time);
 
     InfoDtor(&InfoData);
     HT_Dtor(&MainHashTable);
@@ -112,17 +117,26 @@ int InsertData(HashTable_t* HashTable, Information_t* InfoData)
 
 int StressTest(HashTable_t* HashTable, Information_t* InfoData)
 {
-    size_t t1 = __rdtsc();
+    //create unknown word
+    char* unknown_word = (char*) aligned_alloc (16, sizeof (char) * 16);
+    memset(unknown_word, 0, sizeof (char) * 16);
+    snprintf(unknown_word, 10, "%s", "Barabulka");
+    Line_t NoWord = {9, unknown_word};
+
     for (size_t i = 0; i < AMOUNT_TESTS; i++)
     {
+        //find all words in HT
         for (size_t j = 0; j < (InfoData->n_strings); j++)
         {
             volatile DLL_Node_t* FindNode = HT_Find(HashTable, (InfoData->string_buffer+j)->StartLine, (InfoData->string_buffer+j)->Length);
             //if (FindNode) printf("%c", FindNode->Value.Key[0]);
         }
+        //find unknown word
+        for (size_t j = 0; j < AMOUNT_TESTS; j++)
+        {
+            volatile DLL_Node_t* UnknownNode = HT_Find(HashTable, NoWord.StartLine, NoWord.Length);
+        }
     }
-    size_t t2 = __rdtsc();
-    size_t time = (t2 - t1);
-    printf("\n>>> Time of StressTest: %lu\n", time);
+    free(unknown_word);
     return 1;
 }

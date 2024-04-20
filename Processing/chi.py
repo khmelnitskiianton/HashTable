@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 path2 = "./Processing/chi.txt"
-file2 = "./pictures/chi.png"
+file2 = "./Pictures/chi.png"
 
 #Plot
 xs = []
@@ -25,7 +25,7 @@ ax1.set_ylabel("Chi-squared test value", fontweight="bold")
 ax1.set_title("Chi-Squared Test", fontweight="bold")
 sns.set(context="notebook",font="Sans", font_scale=2, style = "whitegrid", color_codes=True, palette="husl")
 sns1_plot = sns.barplot(data = chi_data, x='x', y='y', ax = ax1)
-ax1.axhline(0.84, xmin=-2, xmax = len(xs) + 2 , color="red")
+ax1.axhline(0.79, xmin=-2, xmax = len(xs) + 2 , color="red")
 ax1.set_xticklabels(ax1.get_xticklabels(), rotation=0)
 plt.grid()  #just add this
 plt.savefig(file2)
