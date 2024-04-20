@@ -57,7 +57,7 @@ sudo apt-get install hotspot                                  #hotspot
 
 В этой работе я исследовал различные хэш функции на однородность и исследовал влияние разных оптимизаций на хэш таблицы.
 
-В первой части я брал различные функции и исследовал их на однородное распределение. База данных состоит из слов произведения[William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5к уникальных слов). 
+В первой части я брал различные функции и исследовал их на однородное распределение. База данных состоит из слов произведения [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5к уникальных слов). 
 
 Хэш таблица построена на двусвязных списках. 
 ```
