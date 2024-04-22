@@ -156,7 +156,11 @@ $$
 - $b_j$ is the number of items in bucket $j$
 
 $$
-\text{A ratio within one confidence interval (0.95 - 1.05) is indicative that the hash function evaluated has an expected uniform distribution.}
+\text{A ratio within one confidence interval (0.95 - 1.05) is indicative} 
+$$
+
+$$
+\text{that the hash function evaluated has an expected uniform distribution.}
 $$
 
 $$
@@ -168,7 +172,11 @@ E[W] = E\left[\frac{1}{n+2m-1}\left(\chi^2 + n + m\right)\right] = \frac{1}{n+2m
 $$
 
 $$
-\text{as advertised. What is of greatest interest is its variance, because that determines how wide a reasonable confidence interval should be:}
+\text{as advertised. What is of greatest interest is its variance,}
+$$
+
+$$
+\text{because that determines how wide a reasonable confidence interval should be:}
 $$
 
 $$
