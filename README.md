@@ -92,13 +92,13 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 В 5-9 представлены сложные хэш-функции, которые применяются в разработке. Их я сравнивал отдельно с одинаковым размером таблицы
 
-1. <U> 0 Hash </U>: Размер: 10, макс. коллизия: 4788. 
+1. <U> 0 Hash </U>: Размер: 10, макс. коллизия: 5303. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/61333956-a35a-4f0f-af68-7bee1986091e" width = 100%>
 
-2. <U> First Letter Hash </U>: Размер: 128, макс. коллизия: 461. 
+2. <U> First Letter Hash </U>: Размер: 128, макс. коллизия: 517.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8e5e56c6-c7dd-44e6-96ad-1ec14d090e33" width = 100%>
 
-3. <U> Length Word Hash </U>: Размер 30, макс. коллизия: 929. 
+3. <U> Length Word Hash </U>: Размер 30, макс. коллизия: 1029. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/bb7af6ef-aeb6-4f67-b70e-cfd61a1a5fc9" width = 100%>
 
 4. <U> Sum of letters Hash </U>: Размер 1500, макс. коллизия: 31.
