@@ -9,7 +9,7 @@ For English version of report check: [README_ENG.md](https://github.com/khmelnit
 - [Хэш Таблицы](#хэш-таблицы)
   - [Оглавление](#оглавление)
   - [Установка](#установка)
-  - [Доп. программы](#доп-программы)
+  - [Зависимые объекты](#зависимые-объекты)
   - [Описание](#описание)
   - [Первая часть](#первая-часть)
     - [Гистограммы](#гистограммы)
@@ -20,16 +20,6 @@ For English version of report check: [README_ENG.md](https://github.com/khmelnit
 
 ## Установка
 
-Для старта программы используйте Makefile
-
-1.  Клонировать репозиторий
-2.  Запустить Makefile (для компиляции)
-3.  Запустить программу 
-
-Настройте makefile чтобы изменить хэш функцию или источник данных
-
-`make all` запустит все, измените `TEST`,`SIZE`,`NAME_HASH`, чтобы менять тесты и `CFLAGS`, `PERF`, `PERF_FLAGS` для профилирования
-
 ```bash
 git clone https://github.com/khmelnitskiianton/HashTable.git
 cd ./HashTable
@@ -38,7 +28,11 @@ make all     #for histograms
 make test    #for perf test
 ```
 
-## Доп. программы
+Настройте makefile, чтобы изменить хэш функцию или источник данных:
+
+`make all` запустит все, измените `TEST`,`SIZE`,`NAME_HASH`, чтобы менять тесты и `CFLAGS`, `PERF`, `PERF_FLAGS` для профилирования.
+
+## Зависимые объекты
 
 GCC compilier, Makefile для сборки, Python & Seaborn для построения гистограмм.
 
@@ -57,7 +51,7 @@ sudo apt-get install hotspot                                  #hotspot
 
 В этой работе я исследовал различные хэш функции на однородность и исследовал влияние разных оптимизаций на хэш таблицы.
 
-В первой части я брал различные функции и исследовал их на однородное распределение. База данных состоит из слов произведения [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt) (5к уникальных слов). 
+В первой части я брал различные функции и исследовал их на однородное распределение. База данных состоит из слов произведения [William Shakespeare. The Tragedy Of Hamlet, Prince Of Denmark](http://lib.ru/SHAKESPEARE/ENGL/hamlet_en.txt).
 
 Хэш таблица построена на двусвязных списках. 
 ```
@@ -75,7 +69,7 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 *Функции*:
 1. Хэш возвращает 0.
-2. Хэш возвращает askii код 1 буквы слова.
+2. Хэш возвращает ascii код 1 буквы слова.
 3. Хэш возвращает длину слова.
 4. Хэш возвращает сумму askii кодов слова.
 5. Хэщ возвращает (сумму букв)/(длину слова).
@@ -84,7 +78,7 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 8. [CRC32 Хэш](https://ru.wikibooks.org/wiki/Реализации_алгоритмов/Циклический_избыточный_код).
 9. [Elf Хэш](https://en.wikipedia.org/wiki/PJW_hash_function)
    
-Для изучения распределения я строил гистограммы `КолличествоКоллизий(ЗначениеХэша)`. Диаграммы показывают распределение числа коллизий по значениям хэш функции, в некоторых из них есть пики, которые влияют на скорость работы хэш таблицы(линейному поиску по списку).
+Для изучения распределения я строил гистограммы `КолличествоКоллизий(ЗначениеХэша)`. Диаграммы показывают распределение числа коллизий по значениям хэш функции, в некоторых из них есть пики, которые влияют на скорость работы хэш таблицы(линейный поиску по списку).
 
 Также размер хэш таблицы фиксирован и является простым числом.
 
@@ -100,51 +94,108 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 2. <U> First Letter Hash </U>: Размер: 128, макс. коллизия: 461. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b9d41ce5-c9a2-48a0-8163-fcb986833191" width = 100%>
 
-1. <U> Length Word Hash </U>: Размер 30, макс. коллизия: 929. 
+3. <U> Length Word Hash </U>: Размер 30, макс. коллизия: 929. 
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/57b06bba-ba51-4afd-92de-2ecc29120fd8" width = 100%>
 
-1. <U> Sum of letters Hash </U>: Размер 1500, макс. коллизия: 31.
+4. <U> Sum of letters Hash </U>: Размер 1500, макс. коллизия: 31.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/50dbd0c6-556f-4271-97d6-f23fd0059b6c" width = 100%>
 
-1. <U> (Sum of letters)/Length Hash </U>: Размер 179, макс. коллизия: 542.
+5. <U> (Sum of letters)/Length Hash </U>: Размер 179, макс. коллизия: 542.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/5b5f7788-5f04-45b0-baa5-377dca79f93d" width = 100%>
 
-1. <U> ROR Hash </U>: Размер 6007, макс. коллизия: 27.
+6. <U> ROR Hash </U>: Размер 6007, макс. коллизия: 27.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b8276c9e-3c0d-45ed-8dd6-0804990ff27c" width = 100%>
 
-1. <U> ROL Hash </U>: Размер 6007, макс. коллизия: 9.
+7. <U> ROL Hash </U>: Размер 6007, макс. коллизия: 9.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4462c3f8-3ebb-4fe1-91e2-b770c9913388" width = 100%>
 
-1. <U> CRC32 Hash </U>: Размер 6007, макс. коллизия: 5.
+8. <U> CRC32 Hash </U>: Размер 6007, макс. коллизия: 5.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/1b3654c0-ebb3-4489-b8b3-0907d9eed7ad" width = 100%>
 
-1.  <U> ElfHash </U>: Размер 6007, макс. коллизия: 6.
+9.  <U> ElfHash </U>: Размер 6007, макс. коллизия: 6.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/61f15010-a60d-4ada-bb0b-04395331352c" width = 100%>
 
 </strong></p>
 
 ### Однородность
 
-
 Для оценки однородности распределения хэш функций можно использовать [тест хи-квадрат](https://en.wikipedia.org/wiki/Chi-squared_test).
 
 Теория для хэш таблиц: [хи квадрат для хэша](https://stats.stackexchange.com/questions/532395/about-the-explanation-of-testing-and-measurement-of-hash-functions-at-wikipedia)
 
 Этот тест является критерием соответствия: он сравнивает фактическое распределение элементов в ячейках с ожидаемым (или равномерным) распределением.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/0eb840bb-b00d-4ec9-9788-aa83fd5af00e" width = 100%>
+
+
+$$\chi^2 = \sum_{j} \frac{r_j^2}{e_j} = \sum_{j} \frac{(b_j-n/m)^2}{n/m} = \frac{m}{n}\sum_{j} \left(b_j - \frac{n}{m}\right)^2 = \frac{m}{n}\left[\sum_j b_j^2\right] - n.$$
+
+$$ 
+\text{When hashing is truly uniform and independent, the expectation of $\chi^2$ is $m - 1$ and its variance is $2 (m - 1)$.}
+$$
+
+$$
+\text{Formula of chi-squared test:}
+$$
+
+$$
+\begin{aligned}
+W = \frac{1}{n/(2m)(n+2m-1)} \sum_j b_j(b_j+1)/2 &= \frac{1}{n+2m-1}\left(\frac{m}{n}\left[\sum_j b_j^2\right] + m\right) \\
+  &= \frac{1}{n+2m-1}\left(\chi^2 + n + m\right).
+\end{aligned}
+$$
+
+$$
+\text{Where:}
+$$
+
+- $n$ is the number of keys
+- $m$ is the number of buckets
+- $b_j$ is the number of items in bucket $j$
+
+$$
+\text{A ratio within one confidence interval (0.95 - 1.05) is indicative that the hash function evaluated has an expected uniform distribution.}
+$$
+
+$$
+\text{However, its expectation indeed is:}
+$$
+
+$$
+E[W] = E\left[\frac{1}{n+2m-1}\left(\chi^2 + n + m\right)\right] = \frac{1}{n+2m-1}\left((m-1) + n + m\right) = 1
+$$
+
+$$
+\text{as advertised. What is of greatest interest is its variance, because that determines how wide a reasonable confidence interval should be:}
+$$
+
+$$
+Var(W) = \frac{Var(\chi^2)}{(n+2m-1)^2} = \frac{m-1}{(n+2m-1)^2}
+$$
+
+$$
+\text{Which means its standard deviation is:}
+$$
+
+$$
+SD(W) = \sqrt{Var(W)} = \frac{\sqrt{m-1}}{n+2m-1}.
+$$
+
+$$
+\text{Reasonable confidence limits for W should be a small multiple of this SD away from the expected value of 1.}
+$$
 
 После обработки результатов я построил диаграмму значений теста хи-квадрат:
 
 <img src = "https://github.com/khmelnitskiianton/HashTable/assets/142332024/bf824d62-ab3d-4846-8975-d7e0d6741015" width = 100%>
 
-После анализирования мы можем видеть что если значения теста хи квадрат стремится к $\frac{m}{n} = 0.79$, то распределение более однородно. Лучшие в распределении функции стали CRC32, ElfHash и ROL Hash.
+После анализирования мы можем видеть что если значения теста хи квадрат стремится к $\frac{m}{n} = 0.79$, то распределение более однородно. Лучшие функции в однородности стали CRC32, ElfHash и ROL Hash.
 
 ## Вторая часть
 
 *Система:*
 
 - Linux Mint 21.3 Cinnamon
-- 12th Gen Intel Core i5-12450H x 8, CPU Temperature: 50 $^\circ C$
+- 12th Gen Intel Core i5-12450H x 8
+- CPU Temperature: 45-55 $^\circ C$, нет троттлинга
 - GCC x86-64 -O3 -msse4.1 -msse4.2 -mavx2 -mavx
 
 Я создал стресс тест: загружал большой текст и искал слова по таблице много раз.
@@ -172,7 +223,7 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 > Отдельно были тесты для только стресс теста, и ускорение не зависит от измерения времени всей программы или только функций поиска.
 
-Первое контрольное время работы программы: 3056114162 тиков
+Первое контрольное время работы программы: $3.61 \cdot 10^6$ тиков.
 
 > Частота процессора не постоянна, поэтому разброс значение составляет $\pm 5$ %
 
@@ -184,17 +235,46 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 > [GCC](https://microsin.net/programming/avr/gcc-inline-functions.html) не встраивает функции при отключенной оптимизации, поэтому нужно использовать атрибут `inline __attribute__((always_inline))`. Поэтому при работе с `-O0` GCC не будет встраивать ничего через обычный `inline` (Это видно из профилировщика).
 
-Новое время стресс теста - 3006040316 тиков. Встраивание дало небольшой прирост в скорости работы программы, так как были убраны множественные вызовы функций.
+Новое время стресс теста - $3.00 \cdot 10^6$ тиков. Встраивание дало прирост 20 % в скорости работы программы, так как были убраны множественные вызовы функций.
 
 1. **Оптимизация хэша:**
 
-Во-первых, я переписал хэш на ассемблере [ElfHash on asm](https://github.com/khmelnitskiianton/HashTable/tree/main/HashTable/AsmFunctions.nasm). Это не дало прироста в скорости.
+Во-первых, я переписал ElfHash на ассемблере 
 
-Поэтому я решил изменит хэш с Elf Hash на CRC32 Hash.
+```assembly
+global ElfHash
+section .text
+ElfHash:
+        movsx   rdx, byte [rdi]
+        xor     eax, eax
+        test    dl, dl
+        je      .L5
+.L4:
+        sal     rax, 4
+        add     rdi, 1
+        add     rdx, rax
+        mov     rax, rdx
+        and     eax, 4026531840
+        mov     rcx, rax
+        shr     rcx, 24
+        xor     rcx, rdx
+        test    rax, rax
+        not     rax
+        cmovne  rdx, rcx
+        and     rax, rdx
+        movsx   rdx, byte[rdi]
+        test    dl, dl
+        jne     .L4
+        ret
+.L5:
+        ret
+```
 
-Первая версия использовала полином с помощью постоянного массива. Скорость оказалась такой же как у Elf Hash.
+Это не дало прироста в скорости. Поэтому я решил изменить хэш с ElfHash на CRC32 Hash.
 
-Вторая версия использовала встроенные функции SSE `_mm_crc32_u8 (crc, char)`, 2727707675 тиков:
+Первая версия CRC32 использовала полином с помощью постоянного массива. Скорость оказалась такой же как у ElfHash.
+
+Вторая версия использовала встроенные функции SSE `_mm_crc32_u8 (crc, char)`, $2.73 \cdot 10^6$ тиков:
 
 ```cpp
 size_t crc = 0xFFFFFFFFUL;
@@ -241,7 +321,7 @@ return crc ^ 0xFFFFFFFFUL;
 Поэтому сначала я создал выравненный буффер и поместил туда все слова.
 Я использовал `aligned_alloc(ALIGNING, bytes)` + `memset()` затем скопировал все слова.
 
-Итоговое время стресс теста - 2196783765 тиков
+Итоговое время стресс теста - $2.19 \cdot 10^6$ тиков (прирост 19 %)
 
 > Я использовал выравнивание по 16 байт. Большее выравнивание не дает ускорения. Если использовать выравнивание по 8 байт и менее это приведет к задержкам, поэтому я подтвердил рузельтаты статьи.
 
@@ -261,7 +341,7 @@ return ((result == 0xFFFF) && (val1.Value == val2.Value));
 
 > `_mm_load_si128()` работает быстрее других функций загрузки в вектор, но она требует выравнивания адресса по 16 байт, иначе это приведет к ошибке `load of misaligned address`-Ошибка сегментации.
 
-Новое время - 1894493994 тиков
+Новое время - $1.89 \cdot 10^6$ тиков (прирост 13%)
 
 **Итоговый отчет Perf:**
 
@@ -273,14 +353,14 @@ return ((result == 0xFFFF) && (val1.Value == val2.Value));
 
 *Таблица результатов*:
 
-|Оптимизация               |Тики        |Ускорение(в сравнении с началом)|
+|Оптимизация               |Тики ($10^6$)    |Ускорение(в сравнении с началом)|
 |:------------------------:|-----------:|:-----:|
-|Начало с `-O3`            |3606891139  |1.00x|
-|Встройка                  |3006040316  |1.20x|
-|Смена хэша на Crc32       |2727707675  |1.32x|
-|Выравнивание              |2636887006  |1.36x|
-|Векторизация Crc32        |2196783765  |1.64x|
-|Векторизация `strcmp()`   |1894493994  |1.90x|
+|Начало с `-O3`            | 3.61 |1.00x|
+|Встройка                  | 3.01 |1.20x|
+|Смена хэша на Crc32       | 2.73 |1.32x|
+|Выравнивание              | 2.64 |1.36x|
+|Векторизация Crc32        | 2.19 |1.64x|
+|Векторизация `strcmp()`   | 1.89 |1.90x|
 
 В этом проекте я исследовал хэш функции, работал с профилировщиком(Perf & HotSpot), ищя узкие места в работе программы и устранял их с помощью оптимизаций таких как: встройка, выравнивание, SIMD инструкции, ассемблерные вставки.
 
