@@ -376,4 +376,4 @@ return ((result == 0xFFFF) && (val1.Value == val2.Value));
 
 В этом проекте я исследовал хэш-функции, работал с профилировщиком(Perf & HotSpot), ищя узкие места в работе программы и устранял их с помощью оптимизаций таких как: встройка, выравнивание, SIMD инструкции, ассемблерные вставки.
 
-$DedInsideCoeff = \frac{boost}{amount \space asm \space strings} \cdot 100 = \frac{190}{12} = 15.8$!
+$DedInsideCoeff = \frac{boost}{amount \space asm \space strings} \cdot 100 = \frac{190}{12} = 15.8$ 
