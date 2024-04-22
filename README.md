@@ -104,16 +104,16 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 4. <U> Sum of letters Hash </U>: Размер 1500, макс. коллизия: 31.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/29571f02-eda4-4fdb-af57-7083f16663b2" width = 100%>
 
-5. <U> (Sum of letters)/Length Hash </U>: Размер 179, макс. коллизия: 542.
+5. <U> (Sum of letters)/Length Hash </U>: Размер 179, макс. коллизия: 634.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/5f3ff2b0-f369-4c9d-a2a4-4801c5af6b19" width = 100%>
 
-6. <U> ROR Hash </U>: Размер 6007, макс. коллизия: 27.
+6. <U> ROR Hash </U>: Размер 6007, макс. коллизия: 31.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/7b634afc-b8d7-4860-8029-eea0b7594a65" width = 100%>
 
 7. <U> ROL Hash </U>: Размер 6007, макс. коллизия: 9.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/894ab5e4-0485-4f3e-be01-c667d62cb658" width = 100%>
 
-8. <U> CRC32 Hash </U>: Размер 6007, макс. коллизия: 5.
+8. <U> CRC32 Hash </U>: Размер 6007, макс. коллизия: 6.
 <img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/20444915-5d1f-4b88-83c6-5bb6d043fdf8" width = 100%>
 
 9.  <U> ElfHash </U>: Размер 6007, макс. коллизия: 6.
