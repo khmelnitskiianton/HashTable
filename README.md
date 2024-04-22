@@ -71,14 +71,14 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 1. Хэш возвращает 0.
 2. Хэш возвращает ascii код 1 буквы слова.
 3. Хэш возвращает длину слова.
-4. Хэш возвращает сумму askii кодов слова.
+4. Хэш возвращает сумму ascii кодов слова.
 5. Хэщ возвращает (сумму букв)/(длину слова).
 6. ROL хэш. `hash[i] = ROL(hash[i-1]) xor str[i]`
 7. ROR хэш. `hash[i] = ROR(hash[i-1]) xor str[i]`
 8. [CRC32 Хэш](https://ru.wikibooks.org/wiki/Реализации_алгоритмов/Циклический_избыточный_код).
 9. [Elf Хэш](https://en.wikipedia.org/wiki/PJW_hash_function)
    
-Для изучения распределения я строил гистограммы `КолличествоКоллизий(ЗначениеХэша)`. Диаграммы показывают распределение числа коллизий по значениям хэш функции, в некоторых из них есть пики, которые влияют на скорость работы хэш таблицы(линейный поиску по списку).
+Для изучения распределения я строил гистограммы `КоличествоКоллизий(ЗначениеХэша)`. Диаграммы показывают распределение числа коллизий по значениям хэш функции, в некоторых из них есть пики, которые влияют на скорость работы хэш таблицы(линейный поиску по списку).
 
 Также размер хэш таблицы фиксирован и является простым числом.
 
@@ -88,32 +88,36 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 <p> <strong>
 
+В 1-4 представлены простые хэш-функции, которые не используются в реальных проектах.
+
+В 5-9 представлены сложные хэш-функции, которые применяются в разработке.
+
 1. <U> 0 Hash </U>: Размер: 10, макс. коллизия: 4788. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/96c683bd-4517-4a3b-b01a-3369ceee4f81" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/22bfc10a-7526-421d-8abb-325a09a82e07" width = 100%>
 
 2. <U> First Letter Hash </U>: Размер: 128, макс. коллизия: 461. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b9d41ce5-c9a2-48a0-8163-fcb986833191" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/8e5e56c6-c7dd-44e6-96ad-1ec14d090e33" width = 100%>
 
 3. <U> Length Word Hash </U>: Размер 30, макс. коллизия: 929. 
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/57b06bba-ba51-4afd-92de-2ecc29120fd8" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/bb7af6ef-aeb6-4f67-b70e-cfd61a1a5fc9" width = 100%>
 
 4. <U> Sum of letters Hash </U>: Размер 1500, макс. коллизия: 31.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/50dbd0c6-556f-4271-97d6-f23fd0059b6c" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/29571f02-eda4-4fdb-af57-7083f16663b2" width = 100%>
 
 5. <U> (Sum of letters)/Length Hash </U>: Размер 179, макс. коллизия: 542.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/5b5f7788-5f04-45b0-baa5-377dca79f93d" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/5f3ff2b0-f369-4c9d-a2a4-4801c5af6b19" width = 100%>
 
 6. <U> ROR Hash </U>: Размер 6007, макс. коллизия: 27.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/b8276c9e-3c0d-45ed-8dd6-0804990ff27c" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/7b634afc-b8d7-4860-8029-eea0b7594a65" width = 100%>
 
 7. <U> ROL Hash </U>: Размер 6007, макс. коллизия: 9.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/4462c3f8-3ebb-4fe1-91e2-b770c9913388" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/894ab5e4-0485-4f3e-be01-c667d62cb658" width = 100%>
 
 8. <U> CRC32 Hash </U>: Размер 6007, макс. коллизия: 5.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/1b3654c0-ebb3-4489-b8b3-0907d9eed7ad" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/20444915-5d1f-4b88-83c6-5bb6d043fdf8" width = 100%>
 
 9.  <U> ElfHash </U>: Размер 6007, макс. коллизия: 6.
-<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/61f15010-a60d-4ada-bb0b-04395331352c" width = 100%>
+<img src="https://github.com/khmelnitskiianton/HashTable/assets/142332024/48211671-75fe-467e-b408-7ed562fdfb6c" width = 100%>
 
 </strong></p>
 
@@ -121,7 +125,7 @@ DLL_Node_t* HT_Find (HashTable_t* myHashTable, HT_Key_t Key, HT_Value_t Value);
 
 Для оценки однородности распределения хэш функций можно использовать [тест хи-квадрат](https://en.wikipedia.org/wiki/Chi-squared_test).
 
-Теория для хэш таблиц: [хи квадрат для хэша](https://stats.stackexchange.com/questions/532395/about-the-explanation-of-testing-and-measurement-of-hash-functions-at-wikipedia)
+Теория для хэш таблиц: [хи-квадрат из Википедии](https://stats.stackexchange.com/questions/532395/about-the-explanation-of-testing-and-measurement-of-hash-functions-at-wikipedia)
 
 Этот тест является критерием соответствия: он сравнивает фактическое распределение элементов в ячейках с ожидаемым (или равномерным) распределением.
 
@@ -201,7 +205,7 @@ $$
 Я создал стресс тест: загружал большой текст и искал слова по таблице много раз.
 Далле с помощью профилировщика я нашел узкие места, которые замедляли скорость работы таблицы и оптимизировал их.
 
-В качестве профилировщика использовался [Perf](https://perf.wiki.kernel.org/index.php/Tutorial) & [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) и визуалировал с помощью [HotSpot](https://github.com/KDAB/hotspot).
+В качестве профилировщика использовался [Perf](https://perf.wiki.kernel.org/index.php/Tutorial) & [Guide Perf](https://stackoverflow.com/questions/1777556/alternatives-to-gprof/10958510#10958510) и визуализировал с помощью [HotSpot](https://github.com/KDAB/hotspot).
 
 Я искал слова 512 раз в цикле, а также несуществующее слово в `StressTest()`.
 
@@ -237,7 +241,7 @@ $$
 
 Новое время стресс теста - $3.00 \cdot 10^6$ тиков. Встраивание дало прирост 20 % в скорости работы программы, так как были убраны множественные вызовы функций.
 
-1. **Оптимизация хэша:**
+1. **Оптимизация хэш-функции:**
 
 Во-первых, я переписал ElfHash на ассемблере 
 
@@ -314,18 +318,18 @@ crc = _mm_crc32_u64 (crc, *(((uint64_t*) str)+1));
 return crc ^ 0xFFFFFFFFUL; 
 ```
 
-Первый результат был странным, время возросло в 2 раза. Это вызвано тем, что выравнивание играет важную роль в скорости работы, т.к. SIMD инструкции зависят от кэша и буффер который загружается в кэш зависит от адресса([Статья от Intel](https://habr.com/ru/companies/intel/articles/262933/))
+Первый результат был странным, время возросло в 2 раза. Это вызвано тем, что выравнивание играет важную роль в скорости работы, т.к. SIMD инструкции зависят от кэша и буфер который загружается в кэш зависит от адреса([Статья от Intel](https://habr.com/ru/companies/intel/articles/262933/))
 
 > Лучшее время достигается при использовании `_mm_crc32_u64()` + `aligned_alloc()`, а не `_mm_crc32_u8()` + `calloc()`
 
-Поэтому сначала я создал выравненный буффер и поместил туда все слова.
+Поэтому сначала я создал выравненный буфер и поместил туда все слова.
 Я использовал `aligned_alloc(ALIGNING, bytes)` + `memset()` затем скопировал все слова.
 
 Итоговое время стресс теста - $2.19 \cdot 10^6$ тиков (прирост 19 %)
 
-> Я использовал выравнивание по 16 байт. Большее выравнивание не дает ускорения. Если использовать выравнивание по 8 байт и менее это приведет к задержкам, поэтому я подтвердил рузельтаты статьи.
+> Я использовал выравнивание по 16 байт. Большее выравнивание не дает ускорения. Если использовать выравнивание по 8 байт и менее это приведет к задержкам, поэтому я подтвердил результаты статьи.
 
-1. **STRCMP Опимизация:**
+1. **STRCMP Оптимизация:**
 
 После всех оптимизаций самый долгий процесс это `strcmp()`. Я использовал AVX инструкции.
 
@@ -339,7 +343,7 @@ int result   = _mm_movemask_epi8 (cmp);
 return ((result == 0xFFFF) && (val1.Value == val2.Value));
 ```
 
-> `_mm_load_si128()` работает быстрее других функций загрузки в вектор, но она требует выравнивания адресса по 16 байт, иначе это приведет к ошибке `load of misaligned address`-Ошибка сегментации.
+> `_mm_load_si128()` работает быстрее других функций загрузки в вектор, но она требует выравнивания адреса по 16 байт, иначе это приведет к ошибке `load of misaligned address`-Ошибка сегментации.
 
 Новое время - $1.89 \cdot 10^6$ тиков (прирост 13%)
 
@@ -353,14 +357,14 @@ return ((result == 0xFFFF) && (val1.Value == val2.Value));
 
 *Таблица результатов*:
 
-|Оптимизация               |Тики ($10^6$)    |Ускорение(в сравнении с началом)|
-|:------------------------:|-----------:|:-----:|
-|Начало с `-O3`            | 3.61 |1.00x|
-|Встройка                  | 3.01 |1.20x|
-|Смена хэша на Crc32       | 2.73 |1.32x|
-|Выравнивание              | 2.64 |1.36x|
-|Векторизация Crc32        | 2.19 |1.64x|
-|Векторизация `strcmp()`   | 1.89 |1.90x|
+|Оптимизация               |Тики ($10^6$)     |Ускорение(в сравнении с началом) |
+|:------------------------:|-----------------:|:-------------------------------:|
+|Начало с `-O3`            | 3.61             |1.00x                            |
+|Встройка                  | 3.01             |1.20x                            |
+|Смена ElfHash на CRC32    | 2.73             |1.32x                            |
+|Выравнивание              | 2.64             |1.36x                            |
+|Векторизация CRC32        | 2.19             |1.64x                            |
+|Векторизация `strcmp()`   | 1.89             |1.90x                            |
 
 В этом проекте я исследовал хэш функции, работал с профилировщиком(Perf & HotSpot), ищя узкие места в работе программы и устранял их с помощью оптимизаций таких как: встройка, выравнивание, SIMD инструкции, ассемблерные вставки.
 

@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <nmmintrin.h>
-#include <emmintrin.h>
+#include <immintrin.h>
 
 #include "Hashing.h"
 
